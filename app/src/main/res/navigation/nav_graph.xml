@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav_graph"
+    app:startDestination="@id/videos">
+
+    <fragment
+        android:id="@+id/videos"
+        android:name="com.karimsinouh.youtixv2.ui.videos.VideosFragment"
+        android:label="VideosFragment" />
+    <fragment
+        android:id="@+id/search"
+        android:name="com.karimsinouh.youtixv2.ui.search.SearchFragment"
+        android:label="FragmentSearch" />
+    <fragment
+        android:id="@+id/playlists"
+        android:name="com.karimsinouh.youtixv2.ui.playlists.PlaylistsFragment"
+        android:label="FragmentPlaylists" />
+    <fragment
+        android:id="@+id/menu"
+        android:name="com.karimsinouh.youtixv2.ui.menu.MenuFragment"
+        android:label="MenuFragment" />
+
+</navigation>
