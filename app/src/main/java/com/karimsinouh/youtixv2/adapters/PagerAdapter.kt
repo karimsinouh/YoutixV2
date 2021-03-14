@@ -26,17 +26,23 @@ class PagerAdapter @Inject constructor(
 
             //list toggle button
             binding.listButton.setOnCheckedChangeListener { _, isChecked ->
-
+                onAddToList?.let {
+                    it(snippet,isChecked)
+                }
             }
 
             //play button
-            binding.playButton.setOnClickListener {
-
+            binding.playButton.setOnClickListener {_->
+                onPlay?.let {
+                    it(snippet)
+                }
             }
 
             //share button
-            binding.shareButton.setOnClickListener {
-
+            binding.shareButton.setOnClickListener {_->
+                onShare?.let {
+                    it(snippet)
+                }
             }
         }
 
@@ -52,6 +58,7 @@ class PagerAdapter @Inject constructor(
 
     override fun getItemCount()=differ.currentList.size
 
+    //diff utils
     private val diffCallback=object :DiffUtil.ItemCallback<VideoItem>(){
         override fun areItemsTheSame(oldItem: VideoItem, newItem: VideoItem)=
                 oldItem.snippet.resourceId?.videoId==newItem.snippet.resourceId?.videoId
@@ -63,5 +70,22 @@ class PagerAdapter @Inject constructor(
     private val differ=AsyncListDiffer(this,diffCallback)
 
     fun submitList(list:List<VideoItem>)=differ.submitList(list)
+
+    //callbacks
+    private var onPlay: ( (Snippet)->Unit )?=null
+    private var onShare: ( (Snippet)->Unit )?=null
+    private var onAddToList: ( (snippet:Snippet,isChecked:Boolean)->Unit )?=null
+
+    fun onPlayClicked(listener:(Snippet)->Unit){
+        onPlay=listener
+    }
+
+    fun onShareClicked(listener:(Snippet)->Unit){
+        onShare=listener
+    }
+
+    fun onAddToListChanges(listener:(snippet:Snippet,isChecked:Boolean)->Unit){
+        onAddToList=listener
+    }
 
 }

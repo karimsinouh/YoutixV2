@@ -23,7 +23,7 @@ object SingletonsModule {
     @Provides
     @Singleton
     fun provideGlideInstance(@ApplicationContext c:Context)=Glide.with(c).setDefaultRequestOptions(
-        RequestOptions().placeholder(R.drawable.ic_launcher_background).error(R.drawable.ic_launcher_background)
+        RequestOptions().placeholder(R.drawable.placeholder).error(R.drawable.placeholder)
     )
 
 

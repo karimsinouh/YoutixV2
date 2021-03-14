@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -27,11 +29,15 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity() {
     
     private lateinit var binding:ActivityMainBinding
+    private lateinit var vm:MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         binding= ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        vm=ViewModelProvider(this).get(MainViewModel::class.java)
 
         binding.bottomNav.setupWithNavController( findNavController(R.id.navHost) )
 
