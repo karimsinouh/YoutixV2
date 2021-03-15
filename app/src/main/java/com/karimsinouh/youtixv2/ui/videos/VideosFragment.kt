@@ -3,9 +3,12 @@ package com.karimsinouh.youtixv2.ui.videos
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.karimsinouh.youtixv2.R
@@ -13,6 +16,7 @@ import com.karimsinouh.youtixv2.adapters.PagerAdapter
 import com.karimsinouh.youtixv2.adapters.VideosAdapter
 import com.karimsinouh.youtixv2.databinding.FragmentVideosBinding
 import com.karimsinouh.youtixv2.ui.main.MainViewModel
+import com.karimsinouh.youtixv2.utils.VIDEO_ID
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -25,6 +29,7 @@ class VideosFragment: Fragment(R.layout.fragment_videos) {
 
     private val vm by activityViewModels<MainViewModel>()
     private lateinit var binding: FragmentVideosBinding
+    private lateinit var nav:NavController
 
     @Inject lateinit var pagerAdapter: PagerAdapter
     @Inject lateinit var adapter:VideosAdapter
@@ -32,6 +37,7 @@ class VideosFragment: Fragment(R.layout.fragment_videos) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding= FragmentVideosBinding.bind(view)
+        nav=findNavController()
 
         setupRcv()
 
@@ -39,8 +45,16 @@ class VideosFragment: Fragment(R.layout.fragment_videos) {
 
         subscribeToObservers()
 
+        adapter.setOnClickListener {
+            navigateToViewVideo(it.snippet.resourceId?.videoId!!)
+        }
+
     }
 
+
+    private fun navigateToViewVideo(id:String){
+        nav.navigate(R.id.videos_to_videoInfo, bundleOf(VIDEO_ID to id))
+    }
 
     private fun subscribeToObservers(){
 

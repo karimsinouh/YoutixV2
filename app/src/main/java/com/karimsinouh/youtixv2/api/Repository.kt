@@ -32,4 +32,11 @@ class Repository @Inject constructor(private val api:RetrofitAPI) {
         }
     }
 
+    suspend fun getVideo(id:String, listener:(Result<VideoItem>)->Unit ){
+        val response=api.getVideo(id)
+        response.apply {
+            listener(Result(isSuccessful,body()?.items!![0],message()))
+        }
+    }
+
 }

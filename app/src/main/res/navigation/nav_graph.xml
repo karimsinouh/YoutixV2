@@ -6,7 +6,11 @@
     <fragment
         android:id="@+id/videos"
         android:name="com.karimsinouh.youtixv2.ui.videos.VideosFragment"
-        android:label="VideosFragment" />
+        android:label="VideosFragment" >
+        <action
+            android:id="@+id/videos_to_videoInfo"
+            app:destination="@id/videoInfoFragment" />
+    </fragment>
     <fragment
         android:id="@+id/search"
         android:name="com.karimsinouh.youtixv2.ui.search.SearchFragment"
@@ -19,5 +23,9 @@
         android:id="@+id/menu"
         android:name="com.karimsinouh.youtixv2.ui.menu.MenuFragment"
         android:label="MenuFragment" />
+    <fragment
+        android:id="@+id/videoInfoFragment"
+        android:name="com.karimsinouh.youtixv2.ui.videoInfo.VideoInfoFragment"
+        android:label="VideoInfoFragment" />
 
 </navigation>
