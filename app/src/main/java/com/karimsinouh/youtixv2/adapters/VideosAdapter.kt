@@ -12,7 +12,7 @@ import com.karimsinouh.youtixv2.databinding.ItemVideoBinding
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton
+
 class VideosAdapter @Inject constructor(
     val glide:RequestManager
 ):RecyclerView.Adapter<VideosAdapter.VideoHolder>() {

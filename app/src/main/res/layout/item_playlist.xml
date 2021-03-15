@@ -13,7 +13,7 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/playlistThumbnail"
+            android:id="@+id/thumbnail"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:scaleType="centerCrop"
@@ -34,7 +34,7 @@
 
         <TextView
             android:textColor="#fff"
-            android:id="@+id/playlistTitle"
+            android:id="@+id/title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"

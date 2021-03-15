@@ -12,7 +12,7 @@ import com.karimsinouh.youtixv2.databinding.ItemPagerHeaderBinding
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton
+
 class PagerAdapter @Inject constructor(
         val glide:RequestManager
 ):RecyclerView.Adapter<PagerAdapter.PagerHolder>() {

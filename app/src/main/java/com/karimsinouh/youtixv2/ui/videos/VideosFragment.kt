@@ -39,11 +39,6 @@ class VideosFragment: Fragment(R.layout.fragment_videos) {
 
         subscribeToObservers()
 
-        lifecycleScope.launch {
-            if (vm.videos.value?.isEmpty()!! )
-                vm.loadVideos()
-        }
-
     }
 
 
