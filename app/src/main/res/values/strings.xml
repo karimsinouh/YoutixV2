@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">Youtix V2</string>
     <string name="videos">Videos</string>
-    <string name="search">Search</string>
     <string name="playlists">Playlists</string>
     <string name="menu">Menu</string>
     <string name="alert">Alert</string>
     <string name="ok">OK</string>
+    <string name="search">Search</string>
 </resources>

@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
+import com.karimsinouh.youtixv2.data.ResourceId
 import com.karimsinouh.youtixv2.data.items.VideoItem
 import com.karimsinouh.youtixv2.databinding.ItemVideoBinding
 import javax.inject.Inject
@@ -31,6 +32,7 @@ class VideosAdapter @Inject constructor(
     override fun onBindViewHolder(holder: VideoHolder, position: Int) {
         val item=differ.currentList[position]
         holder.bind(item)
+
 
         //onClick
         holder.itemView.setOnClickListener { _->
