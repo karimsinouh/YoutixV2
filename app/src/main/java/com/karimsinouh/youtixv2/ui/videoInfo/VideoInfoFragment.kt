@@ -56,13 +56,13 @@ class VideoInfoFragment: Fragment(R.layout.fragment_video_info) {
     }
 
     private fun showViews()=binding.apply{
-        bar.visibility=View.GONE
-        nestedScrollView.visibility=View.VISIBLE
+        bar.alpha=0f
+        nestedScrollView.alpha=1f
     }
 
     private fun hideViews()=binding.apply{
-        bar.visibility=View.VISIBLE
-        nestedScrollView.visibility=View.GONE
+        bar.alpha=1f
+        nestedScrollView.alpha=0f
     }
 
 }
