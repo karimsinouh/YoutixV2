@@ -9,6 +9,7 @@
         motion:duration="1000">
        <KeyFrameSet>
        </KeyFrameSet>
+        <OnSwipe motion:touchAnchorId="@+id/nestedScrollView" />
     </Transition>
 
     <ConstraintSet android:id="@+id/start">

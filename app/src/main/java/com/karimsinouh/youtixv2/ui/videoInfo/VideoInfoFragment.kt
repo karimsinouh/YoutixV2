@@ -10,6 +10,7 @@ import com.karimsinouh.youtixv2.R
 import com.karimsinouh.youtixv2.data.items.VideoItem
 import com.karimsinouh.youtixv2.databinding.FragmentVideoInfoBinding
 import com.karimsinouh.youtixv2.utils.VIDEO_ID
+import com.karimsinouh.youtixv2.utils.ViewsFormatter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -50,9 +51,13 @@ class VideoInfoFragment: Fragment(R.layout.fragment_video_info) {
 
     private fun bindVideo(video:VideoItem)=binding.apply{
         glide.load(video.snippet.thumbnails.medium.url).into(thumbnail)
-
         title.text=video.snippet.title
         description.text=video.snippet.description
+
+        views.text=ViewsFormatter.format(video.statistics?.viewCount ?: 0)
+        likes.text=ViewsFormatter.format(video.statistics?.likeCount ?: 0)
+        dislikes.text=ViewsFormatter.format(video.statistics?.dislikeCount ?: 0)
+
     }
 
     private fun showViews()=binding.apply{
