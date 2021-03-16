@@ -1,5 +1,6 @@
 package com.karimsinouh.youtixv2.ui.videoInfo
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -9,6 +10,7 @@ import com.bumptech.glide.RequestManager
 import com.karimsinouh.youtixv2.R
 import com.karimsinouh.youtixv2.data.items.VideoItem
 import com.karimsinouh.youtixv2.databinding.FragmentVideoInfoBinding
+import com.karimsinouh.youtixv2.ui.videoPlayer.PlayerActivity
 import com.karimsinouh.youtixv2.utils.VIDEO_ID
 import com.karimsinouh.youtixv2.utils.ViewsFormatter
 import dagger.hilt.android.AndroidEntryPoint
@@ -58,6 +60,10 @@ class VideoInfoFragment: Fragment(R.layout.fragment_video_info) {
         likes.text=ViewsFormatter.format(video.statistics?.likeCount ?: 0)
         dislikes.text=ViewsFormatter.format(video.statistics?.dislikeCount ?: 0)
 
+        playButton.setOnClickListener {
+            navigateToPlayer(videoId)
+        }
+
     }
 
     private fun showViews()=binding.apply{
@@ -70,4 +76,10 @@ class VideoInfoFragment: Fragment(R.layout.fragment_video_info) {
         nestedScrollView.alpha=0f
     }
 
+    private fun navigateToPlayer(videoId: String) {
+        val intent= Intent(requireContext(), PlayerActivity::class.java).also {
+            it.putExtra(VIDEO_ID,videoId)
+            activity?.startActivity(it)
+        }
+    }
 }

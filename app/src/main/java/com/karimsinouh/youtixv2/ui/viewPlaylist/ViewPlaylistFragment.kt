@@ -1,5 +1,6 @@
 package com.karimsinouh.youtixv2.ui.viewPlaylist
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -11,8 +12,10 @@ import com.karimsinouh.youtixv2.R
 import com.karimsinouh.youtixv2.adapters.PlaylistVideosAdapter
 import com.karimsinouh.youtixv2.data.items.VideoItem
 import com.karimsinouh.youtixv2.databinding.FragmentViewPlaylistBinding
+import com.karimsinouh.youtixv2.ui.videoPlayer.PlayerActivity
 import com.karimsinouh.youtixv2.utils.PLAYLIST_ID
 import com.karimsinouh.youtixv2.utils.PLAYLIST_NAME
+import com.karimsinouh.youtixv2.utils.VIDEO_ID
 import com.karimsinouh.youtixv2.utils.ViewsFormatter
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -80,6 +83,18 @@ class ViewPlaylistFragment:Fragment(R.layout.fragment_view_playlist) {
             likes.text=ViewsFormatter.format(video.statistics?.likeCount!!)
             views.text=ViewsFormatter.format(video.statistics.viewCount)
             dislikes.text=ViewsFormatter.format(video.statistics.dislikeCount)
+        }
+
+        playButton.setOnClickListener {
+            navigateToPlayer(video.snippet.resourceId?.videoId!!)
+        }
+
+    }
+
+    private fun navigateToPlayer(videoId: String) {
+        val intent=Intent(requireContext(),PlayerActivity::class.java).also {
+            it.putExtra(VIDEO_ID,videoId)
+            activity?.startActivity(it)
         }
     }
 
