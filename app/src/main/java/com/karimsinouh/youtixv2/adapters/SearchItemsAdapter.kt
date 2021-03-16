@@ -6,8 +6,10 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
+import com.karimsinouh.youtixv2.data.ResourceId
 import com.karimsinouh.youtixv2.data.items.SearchItem
 import com.karimsinouh.youtixv2.databinding.ItemSearchItemBinding
+import com.karimsinouh.youtixv2.utils.KIND_VIDEO
 import javax.inject.Inject
 
 class SearchItemsAdapter @Inject constructor(
@@ -18,7 +20,14 @@ class SearchItemsAdapter @Inject constructor(
         fun bind(item:SearchItem)=binding.apply{
             glide.load(item.snippet.thumbnails.medium.url).into(thumbnail)
             title.text=item.snippet.title
-            kind.text=if (item.id.kind=="youtube#video") "Video" else "Playlist"
+            kind.text=if (item.id.kind== KIND_VIDEO) "Video" else "Playlist"
+
+            root.setOnClickListener { _->
+                onClick?.let {
+                    it(item.id)
+                }
+            }
+
         }
     }
 
@@ -35,7 +44,7 @@ class SearchItemsAdapter @Inject constructor(
     //diff utils
     private val diffCallback=object:DiffUtil.ItemCallback<SearchItem>(){
         override fun areItemsTheSame(oldItem: SearchItem, newItem: SearchItem):Boolean{
-            return if (oldItem.id.kind=="youtube#video")
+            return if (oldItem.id.kind== KIND_VIDEO)
                 oldItem.id.videoId==newItem.id.videoId
             else
                 oldItem.id.playlistId==newItem.id.playlistId
@@ -50,5 +59,10 @@ class SearchItemsAdapter @Inject constructor(
     fun submitList(list:List<SearchItem>)=differ.submitList(list)
 
     //callbacks
+    private var onClick:( (ResourceId)->Unit )?=null
+
+    fun setOnClickListener(listener:(ResourceId)->Unit){
+        onClick=listener
+    }
 
 }

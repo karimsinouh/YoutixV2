@@ -14,11 +14,19 @@
     <fragment
         android:id="@+id/search"
         android:name="com.karimsinouh.youtixv2.ui.search.SearchFragment"
-        android:label="FragmentSearch" />
+        android:label="FragmentSearch" >
+        <action
+            android:id="@+id/search_to_videoInfo"
+            app:destination="@id/videoInfoFragment" />
+    </fragment>
     <fragment
         android:id="@+id/playlists"
         android:name="com.karimsinouh.youtixv2.ui.playlists.PlaylistsFragment"
-        android:label="FragmentPlaylists" />
+        android:label="FragmentPlaylists" >
+        <action
+            android:id="@+id/playlists_to_viewPlaylist"
+            app:destination="@id/viewPlaylistFragment" />
+    </fragment>
     <fragment
         android:id="@+id/menu"
         android:name="com.karimsinouh.youtixv2.ui.menu.MenuFragment"
@@ -27,5 +35,9 @@
         android:id="@+id/videoInfoFragment"
         android:name="com.karimsinouh.youtixv2.ui.videoInfo.VideoInfoFragment"
         android:label="VideoInfoFragment" />
+    <fragment
+        android:id="@+id/viewPlaylistFragment"
+        android:name="com.karimsinouh.youtixv2.ui.viewPlaylist.ViewPlaylistFragment"
+        android:label="ViewPlaylistFragment" />
 
 </navigation>

@@ -49,6 +49,10 @@ class VideosFragment: Fragment(R.layout.fragment_videos) {
             navigateToViewVideo(it.snippet.resourceId?.videoId!!)
         }
 
+        pagerAdapter.onPlayClicked {
+            navigateToViewVideo(it.resourceId?.videoId!!)
+        }
+
     }
 
 

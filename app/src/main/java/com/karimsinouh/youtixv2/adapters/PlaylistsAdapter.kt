@@ -6,10 +6,9 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
-import com.karimsinouh.youtixv2.data.items.PlaylistIem
+import com.karimsinouh.youtixv2.data.items.PlaylistItem
 import com.karimsinouh.youtixv2.databinding.ItemPlaylistBinding
 import javax.inject.Inject
-import javax.inject.Singleton
 
 
 class PlaylistsAdapter @Inject constructor(
@@ -17,9 +16,15 @@ class PlaylistsAdapter @Inject constructor(
 ):RecyclerView.Adapter<PlaylistsAdapter.PlaylistHolder>() {
 
     inner class PlaylistHolder(private val binding:ItemPlaylistBinding):RecyclerView.ViewHolder(binding.root){
-        fun bind(item:PlaylistIem)=binding.apply{
+        fun bind(item:PlaylistItem)=binding.apply{
             glide.load(item.snippet.thumbnails.medium.url).into(thumbnail)
             title.text=item.snippet.title
+
+            root.setOnClickListener { _->
+                onClick?.let {
+                    it(item)
+                }
+            }
         }
     }
 
@@ -34,16 +39,22 @@ class PlaylistsAdapter @Inject constructor(
     override fun getItemCount()=differ.currentList.size
 
     //diff utils
-    private val diffCallback=object: DiffUtil.ItemCallback<PlaylistIem>(){
-        override fun areItemsTheSame(oldItem: PlaylistIem, newItem: PlaylistIem)=
+    private val diffCallback=object: DiffUtil.ItemCallback<PlaylistItem>(){
+        override fun areItemsTheSame(oldItem: PlaylistItem, newItem: PlaylistItem)=
                 oldItem.id==newItem.id
 
-        override fun areContentsTheSame(oldItem: PlaylistIem, newItem: PlaylistIem)
+        override fun areContentsTheSame(oldItem: PlaylistItem, newItem: PlaylistItem)
         =oldItem.snippet.hashCode()==newItem.snippet.hashCode()
     }
 
     private val differ=AsyncListDiffer(this,diffCallback)
 
-    fun submitList(list:List<PlaylistIem>)=differ.submitList(list)
+    fun submitList(list:List<PlaylistItem>)=differ.submitList(list)
 
+    //callbacks
+    private var onClick:( (PlaylistItem)->Unit )?=null
+
+    fun setOnClickListener( listener:(PlaylistItem)->Unit){
+        onClick=listener
+    }
 }

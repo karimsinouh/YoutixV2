@@ -1,8 +1,7 @@
 package com.karimsinouh.youtixv2.api
 
 import com.karimsinouh.youtixv2.data.ResponsePage
-import com.karimsinouh.youtixv2.data.Snippet
-import com.karimsinouh.youtixv2.data.items.PlaylistIem
+import com.karimsinouh.youtixv2.data.items.PlaylistItem
 import com.karimsinouh.youtixv2.data.items.SearchItem
 import com.karimsinouh.youtixv2.data.items.VideoItem
 import com.karimsinouh.youtixv2.utils.API_KEY
@@ -18,7 +17,7 @@ interface RetrofitAPI {
     suspend fun getVideos( @Query("pageToken") pageToken:String?="" ):Response<ResponsePage<VideoItem>>
 
     @GET("playlists?part=snippet,contentDetails&channelId=$CHANNEL_ID&maxResults=20&key=$API_KEY")
-    suspend fun getPlaylists( @Query("pageToken") pageToken:String?="" ):Response<ResponsePage<PlaylistIem>>
+    suspend fun getPlaylists( @Query("pageToken") pageToken:String?="" ):Response<ResponsePage<PlaylistItem>>
 
     @GET("search?part=snippet&channelId=$CHANNEL_ID&key=$API_KEY")
     suspend fun search( @Query("q") q:String ):Response<ResponsePage<SearchItem>>
@@ -30,6 +29,6 @@ interface RetrofitAPI {
     suspend fun getVideo( @Query("id") id:String ):Response<ResponsePage<VideoItem>>
 
     @GET("playlistItems?part=snippet,contentDetails&key=$API_KEY")
-    fun getPlaylistVideos( @Query("playlistId") id:String ):Response<ResponsePage<VideoItem>>
+    suspend fun getPlaylistVideos( @Query("playlistId") id:String ):Response<ResponsePage<VideoItem>>
 
 }

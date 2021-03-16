@@ -4,14 +4,19 @@ import android.os.Bundle
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.karimsinouh.youtixv2.R
 import com.karimsinouh.youtixv2.adapters.SearchItemsAdapter
 import com.karimsinouh.youtixv2.databinding.FragmentSearchBinding
+import com.karimsinouh.youtixv2.utils.KIND_VIDEO
+import com.karimsinouh.youtixv2.utils.VIDEO_ID
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -21,6 +26,7 @@ class SearchFragment:Fragment(R.layout.fragment_search) {
 
     private lateinit var binding:FragmentSearchBinding
     private lateinit var builder:MaterialAlertDialogBuilder
+    private lateinit var nav:NavController
 
     @Inject lateinit var adapter:SearchItemsAdapter
     private val vm by viewModels<SearchViewModel>()
@@ -28,7 +34,7 @@ class SearchFragment:Fragment(R.layout.fragment_search) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding= FragmentSearchBinding.bind(view)
-
+        nav=findNavController()
 
         setupRcv()
 
@@ -41,6 +47,21 @@ class SearchFragment:Fragment(R.layout.fragment_search) {
             if (q.isNotEmpty())
                 search(q)
         }
+
+        adapter.setOnClickListener {
+            if (it.kind== KIND_VIDEO)
+                navigateToVideoInfo(it.videoId!!)
+            else
+                navigateToViewPlaylist(it.playlistId!!)
+        }
+    }
+
+    private fun navigateToVideoInfo(id:String){
+        nav.navigate(R.id.search_to_videoInfo, bundleOf(VIDEO_ID to id))
+    }
+
+    private fun navigateToViewPlaylist(id:String){
+
     }
 
     private fun setupRcv()=binding.rcv.apply{
@@ -54,6 +75,7 @@ class SearchFragment:Fragment(R.layout.fragment_search) {
         vm.result.observe(viewLifecycleOwner){
             if (it.isEmpty()){
                 Toast.makeText(requireContext(),"No results",Toast.LENGTH_SHORT).show()
+                binding.bar.visibility=View.GONE
             }else{
                 adapter.submitList(it)
                 binding.bar.visibility=View.GONE
