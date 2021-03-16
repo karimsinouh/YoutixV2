@@ -11,7 +11,7 @@ import com.karimsinouh.youtixv2.data.entities.HistoryItem
 @Dao
 interface HistoryDAO {
 
-    @Query("SELECT 1 FROM HistoryItem")
+    @Query("SELECT * FROM HistoryItem")
     fun list():LiveData<List<HistoryItem>>
 
     @Query("SELECT * FROM HistoryItem WHERE id =:videoId")

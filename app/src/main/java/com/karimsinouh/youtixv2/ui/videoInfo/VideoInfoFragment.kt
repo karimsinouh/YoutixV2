@@ -15,6 +15,7 @@ import com.karimsinouh.youtixv2.utils.VIDEO_ID
 import com.karimsinouh.youtixv2.utils.ViewsFormatter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -52,6 +53,9 @@ class VideoInfoFragment: Fragment(R.layout.fragment_video_info) {
     }
 
     private fun bindVideo(video:VideoItem)=binding.apply{
+
+        val id=video.id!!
+
         glide.load(video.snippet.thumbnails.medium.url).into(thumbnail)
         title.text=video.snippet.title
         description.text=video.snippet.description
@@ -63,6 +67,18 @@ class VideoInfoFragment: Fragment(R.layout.fragment_video_info) {
         playButton.setOnClickListener {
             navigateToPlayer(videoId)
         }
+
+        vm.exists{
+            later.isChecked=it
+        }
+
+        later.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked)
+                vm.addToWatchLater()
+            else
+                vm.deleteFromWatchLater()
+        }
+
 
     }
 

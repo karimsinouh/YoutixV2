@@ -2,14 +2,19 @@ package com.karimsinouh.youtixv2.api
 
 import com.karimsinouh.youtixv2.data.ResponsePage
 import com.karimsinouh.youtixv2.data.Result
+import com.karimsinouh.youtixv2.data.entities.WatchLater
 import com.karimsinouh.youtixv2.data.items.PlaylistItem
 import com.karimsinouh.youtixv2.data.items.SearchItem
 import com.karimsinouh.youtixv2.data.items.VideoItem
+import com.karimsinouh.youtixv2.database.Database
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class Repository @Inject constructor(private val api:RetrofitAPI) {
+class Repository @Inject constructor(
+        private val api:RetrofitAPI,
+        val db:Database
+        ) {
 
     suspend fun getVideo(id:String, listener:(Result<VideoItem>)->Unit ){
         api.getVideo(id).apply {

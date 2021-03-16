@@ -8,8 +8,8 @@ import androidx.room.PrimaryKey
 * */
 @Entity
 data class HistoryItem(
-        @PrimaryKey(autoGenerate = true) val id:Int,
         val videoId:String,
-        val duration:Long,
-        val currentMillis:Long
+        val duration:Int,
+        val currentMillis:Int,
+        @PrimaryKey(autoGenerate = true) val id:Int?=0,
 )

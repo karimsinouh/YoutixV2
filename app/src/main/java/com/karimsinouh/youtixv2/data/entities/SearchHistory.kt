@@ -5,6 +5,6 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class SearchHistory(
-        @PrimaryKey val id:Int,
         val query:String,
+        @PrimaryKey val id:Int?=0,
 )
