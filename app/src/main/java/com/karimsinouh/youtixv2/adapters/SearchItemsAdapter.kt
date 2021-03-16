@@ -24,10 +24,9 @@ class SearchItemsAdapter @Inject constructor(
 
             root.setOnClickListener { _->
                 onClick?.let {
-                    it(item.id)
+                    it(item.id,item.snippet.title)
                 }
             }
-
         }
     }
 
@@ -59,9 +58,10 @@ class SearchItemsAdapter @Inject constructor(
     fun submitList(list:List<SearchItem>)=differ.submitList(list)
 
     //callbacks
-    private var onClick:( (ResourceId)->Unit )?=null
+    private var onClick:( (ResourceId,itemName:String)->Unit )?=null
 
-    fun setOnClickListener(listener:(ResourceId)->Unit){
+    //param String refers to the playlist name, we need it to navigate to view playlist
+    fun setOnClickListener(listener:(ResourceId,itemName:String)->Unit){
         onClick=listener
     }
 

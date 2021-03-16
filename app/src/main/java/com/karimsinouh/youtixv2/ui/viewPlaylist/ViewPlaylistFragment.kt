@@ -9,11 +9,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.RequestManager
 import com.karimsinouh.youtixv2.R
 import com.karimsinouh.youtixv2.adapters.PlaylistVideosAdapter
-import com.karimsinouh.youtixv2.data.items.PlaylistItem
 import com.karimsinouh.youtixv2.data.items.VideoItem
 import com.karimsinouh.youtixv2.databinding.FragmentViewPlaylistBinding
 import com.karimsinouh.youtixv2.utils.PLAYLIST_ID
-import com.karimsinouh.youtixv2.utils.PLAYLIST_ITEM
+import com.karimsinouh.youtixv2.utils.PLAYLIST_NAME
 import com.karimsinouh.youtixv2.utils.ViewsFormatter
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -22,7 +21,8 @@ import javax.inject.Inject
 class ViewPlaylistFragment:Fragment(R.layout.fragment_view_playlist) {
 
     private lateinit var binding:FragmentViewPlaylistBinding
-    private lateinit var playlist:PlaylistItem
+    private lateinit var playlistId:String
+    private lateinit var playlistName:String
 
     @Inject lateinit var glide:RequestManager
     @Inject lateinit var adapter:PlaylistVideosAdapter
@@ -33,11 +33,12 @@ class ViewPlaylistFragment:Fragment(R.layout.fragment_view_playlist) {
         super.onViewCreated(view, savedInstanceState)
         binding= FragmentViewPlaylistBinding.bind(view)
 
-        playlist=arguments?.getSerializable(PLAYLIST_ITEM) as PlaylistItem
+        playlistId=arguments?.getString(PLAYLIST_ID)!!
+        playlistName=arguments?.getString(PLAYLIST_NAME)!!
+
+        binding.playlistTitle.text=playlistName
 
         setupRcv()
-
-        subscribeToObservers()
 
         adapter.setOnClickListener {
             vm.loadVideo(it.snippet.resourceId?.videoId!!)
@@ -45,8 +46,9 @@ class ViewPlaylistFragment:Fragment(R.layout.fragment_view_playlist) {
             binding.root.fullScroll(View.FOCUS_UP)
         }
 
-        vm.loadVideos(playlist.id)
+        vm.loadVideos(playlistId)
 
+        subscribeToObservers()
     }
 
     private fun subscribeToObservers(){

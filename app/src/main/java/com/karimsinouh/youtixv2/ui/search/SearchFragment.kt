@@ -16,6 +16,8 @@ import com.karimsinouh.youtixv2.R
 import com.karimsinouh.youtixv2.adapters.SearchItemsAdapter
 import com.karimsinouh.youtixv2.databinding.FragmentSearchBinding
 import com.karimsinouh.youtixv2.utils.KIND_VIDEO
+import com.karimsinouh.youtixv2.utils.PLAYLIST_ID
+import com.karimsinouh.youtixv2.utils.PLAYLIST_NAME
 import com.karimsinouh.youtixv2.utils.VIDEO_ID
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -48,11 +50,11 @@ class SearchFragment:Fragment(R.layout.fragment_search) {
                 search(q)
         }
 
-        adapter.setOnClickListener {
-            if (it.kind== KIND_VIDEO)
-                navigateToVideoInfo(it.videoId!!)
+        adapter.setOnClickListener {id,name->
+            if (id.kind== KIND_VIDEO)
+                navigateToVideoInfo(id.videoId!!)
             else
-                navigateToViewPlaylist(it.playlistId!!)
+                navigateToViewPlaylist(id.playlistId!!,name)
         }
     }
 
@@ -60,8 +62,8 @@ class SearchFragment:Fragment(R.layout.fragment_search) {
         nav.navigate(R.id.search_to_videoInfo, bundleOf(VIDEO_ID to id))
     }
 
-    private fun navigateToViewPlaylist(id:String){
-
+    private fun navigateToViewPlaylist(id:String,playlistName:String){
+        nav.navigate(R.id.search_to_viewPlaylist, bundleOf(PLAYLIST_ID to id, PLAYLIST_NAME to playlistName))
     }
 
     private fun setupRcv()=binding.rcv.apply{

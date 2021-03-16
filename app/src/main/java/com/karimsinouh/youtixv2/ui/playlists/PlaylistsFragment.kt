@@ -17,7 +17,9 @@ import com.karimsinouh.youtixv2.api.Repository
 import com.karimsinouh.youtixv2.data.items.PlaylistItem
 import com.karimsinouh.youtixv2.databinding.FragmentPlaylistsBinding
 import com.karimsinouh.youtixv2.ui.main.MainViewModel
+import com.karimsinouh.youtixv2.utils.PLAYLIST_ID
 import com.karimsinouh.youtixv2.utils.PLAYLIST_ITEM
+import com.karimsinouh.youtixv2.utils.PLAYLIST_NAME
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -47,7 +49,7 @@ class PlaylistsFragment:Fragment(R.layout.fragment_playlists) {
     }
 
     private fun navigateToViewPlaylist(playlist:PlaylistItem){
-        nav.navigate(R.id.playlists_to_viewPlaylist, bundleOf(PLAYLIST_ITEM to playlist))
+        nav.navigate(R.id.playlists_to_viewPlaylist, bundleOf(PLAYLIST_ID to playlist.id, PLAYLIST_NAME to playlist.snippet.title))
     }
 
     private fun setupRcv()=binding.rcv.apply{

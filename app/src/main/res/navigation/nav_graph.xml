@@ -18,6 +18,9 @@
         <action
             android:id="@+id/search_to_videoInfo"
             app:destination="@id/videoInfoFragment" />
+        <action
+            android:id="@+id/search_to_viewPlaylist"
+            app:destination="@id/viewPlaylistFragment" />
     </fragment>
     <fragment
         android:id="@+id/playlists"
