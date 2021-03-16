@@ -1,10 +1,13 @@
 package com.karimsinouh.youtixv2.di
 
 import android.content.Context
+import androidx.room.Room
+import androidx.room.RoomDatabase
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.karimsinouh.youtixv2.R
 import com.karimsinouh.youtixv2.api.RetrofitAPI
+import com.karimsinouh.youtixv2.database.Database
 import com.karimsinouh.youtixv2.utils.BASE_URL
 import dagger.Module
 import dagger.Provides
@@ -31,5 +34,11 @@ object SingletonsModule {
     @Singleton
     fun provideRetrofitInstance()=
         Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create()).build().create(RetrofitAPI::class.java)
+
+
+    @Provides
+    @Singleton
+    fun provideDatabaseInstance(@ApplicationContext c:Context)=
+            Room.databaseBuilder(c,Database::class.java,"database").build()
 
 }

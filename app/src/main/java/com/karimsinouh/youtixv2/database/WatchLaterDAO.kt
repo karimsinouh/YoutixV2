@@ -23,4 +23,7 @@ interface WatchLaterDAO {
     @Query("SELECT EXISTS (SELECT 1 FROM WatchLater WHERE videoId=:videoId) ")
     suspend fun exists(videoId:String)
 
+    @Query("DELETE  FROM WatchLater")
+    fun clear()
+
 }

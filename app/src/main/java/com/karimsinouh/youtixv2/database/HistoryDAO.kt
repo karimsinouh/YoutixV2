@@ -29,4 +29,7 @@ interface HistoryDAO {
     @Query("UPDATE HistoryItem SET currentMillis =:millis WHERE videoId=:videoId ")
     suspend fun updateMillis(videoId:String,millis:Long)
 
+    @Query("DELETE  FROM HistoryItem")
+    fun clear()
+
 }
