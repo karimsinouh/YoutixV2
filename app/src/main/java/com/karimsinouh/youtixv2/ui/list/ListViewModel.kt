@@ -5,15 +5,17 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.karimsinouh.youtixv2.api.Repository
+import com.karimsinouh.youtixv2.data.entities.HistoryItem
+import com.karimsinouh.youtixv2.data.entities.WatchLater
 import com.karimsinouh.youtixv2.data.items.VideoItem
 import com.karimsinouh.youtixv2.database.Database
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import java.text.FieldPosition
 import javax.inject.Inject
 
 @HiltViewModel
 class ListViewModel @Inject constructor(
-        private val db:Database,
         private val repo:Repository
 ):ViewModel() {
 
@@ -25,11 +27,11 @@ class ListViewModel @Inject constructor(
 
     //observable values
     val history by lazy {
-        db.history().list()
+        repo.db.history().list()
     }
 
     val watchLater by lazy {
-        db.watchLater().list()
+        repo.db.watchLater().list()
     }
 
     val error:LiveData<String> = _error
@@ -44,6 +46,16 @@ class ListViewModel @Inject constructor(
             else
                 _error.postValue(it.message)
         }
+    }
+
+    fun deleteFromHistory(position: Int)=viewModelScope.launch {
+        val item=list.value!![position]
+        repo.db.history().delete(item.id!!)
+    }
+
+    fun deleteFromWatchLater(position: Int)=viewModelScope.launch {
+        val item=list.value!![position]
+        repo.db.watchLater().delete(item.id!!)
     }
 
 }

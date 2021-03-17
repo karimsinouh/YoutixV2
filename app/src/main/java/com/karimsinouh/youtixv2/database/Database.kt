@@ -13,6 +13,4 @@ abstract class Database: RoomDatabase() {
     abstract fun watchLater():WatchLaterDAO
     abstract fun searchHistory():SearchHistoryDAO
 
-
-
 }

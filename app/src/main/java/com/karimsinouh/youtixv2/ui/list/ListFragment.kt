@@ -8,7 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.karimsinouh.youtixv2.R
 import com.karimsinouh.youtixv2.adapters.PlaylistVideosAdapter
 import com.karimsinouh.youtixv2.data.entities.HistoryItem
@@ -68,6 +70,26 @@ class ListFragment:Fragment(R.layout.fragment_list) {
         layoutManager=LinearLayoutManager(requireContext())
         setHasFixedSize(true)
         adapter=this@ListFragment.adapter
+
+
+        val itemTouchHelperCallback=object : ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.RIGHT){
+            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+               return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position=viewHolder.adapterPosition
+
+                if(action== ACTION_HISTORY)
+                    vm.deleteFromHistory(position)
+                else
+                    vm.deleteFromWatchLater(position)
+
+            }
+
+        }
+
+        val touchHelper=ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(this)
     }
 
     private fun subscribeToObservers(){

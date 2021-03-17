@@ -17,8 +17,8 @@ interface HistoryDAO {
     @Insert(entity = HistoryItem::class)
     suspend fun add(item:HistoryItem)
 
-    @Delete(entity = HistoryItem::class)
-    suspend fun delete(item:HistoryItem)
+    @Query("DELETE FROM HistoryItem WHERE videoId=:videoId")
+    suspend fun delete(videoId: String)
 
     @Query(" SELECT EXISTS (SELECT * FROM HistoryItem WHERE videoId=:videoId) ")
     suspend fun exists(videoId:String):Boolean
