@@ -2,6 +2,7 @@ package com.karimsinouh.youtixv2.ui.videoPlayer
 
 import android.os.Bundle
 import android.view.WindowManager
+import androidx.room.Room
 import com.google.android.youtube.player.YouTubeBaseActivity
 import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
@@ -16,13 +17,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@AndroidEntryPoint
 class PlayerActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListener {
 
 
     private lateinit var binding:ActivityPlayerBinding
     private lateinit var videoId:String
-    @Inject lateinit var db: Database
+    private lateinit var db: Database
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +33,8 @@ class PlayerActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListene
         videoId=intent.getStringExtra(VIDEO_ID)!!
 
         binding.player.initialize(API_KEY,this)
+
+        db=Room.databaseBuilder(this,Database::class.java,"database").build()
 
     }
 
