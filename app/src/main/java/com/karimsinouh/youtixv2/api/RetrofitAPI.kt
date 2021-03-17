@@ -22,7 +22,7 @@ interface RetrofitAPI {
     @GET("search?part=snippet&channelId=$CHANNEL_ID&key=$API_KEY")
     suspend fun search( @Query("q") q:String ):Response<ResponsePage<SearchItem>>
 
-    @GET("videos?part=snippet,contentDetails,statistics&key=$API_KEY")
+    @GET("videos?part=snippet&key=$API_KEY")
     suspend fun getSelectedVideos( @Query("id") ids:String ):Response<ResponsePage<VideoItem>>
 
     @GET("videos?part=snippet,contentDetails,statistics&key=$API_KEY")

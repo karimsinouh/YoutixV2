@@ -12,3 +12,7 @@ const val PLAYLIST_NAME="playlist_name"
 
 const val KIND_VIDEO="youtube#video"
 const val KIND_PLAYLIST="youtube#playlist"
+
+const val ACTION="action"
+const val ACTION_HISTORY="action_history"
+const val ACTION_WATCH_LATER="action_watch_later"

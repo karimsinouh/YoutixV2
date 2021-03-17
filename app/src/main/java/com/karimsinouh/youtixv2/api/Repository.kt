@@ -31,6 +31,12 @@ class Repository @Inject constructor(
         }
     }
 
+    suspend fun getSelectedVideos(id:String, listener:(Result<List<VideoItem>>)->Unit ){
+        api.getSelectedVideos(id).apply {
+            listener(Result(isSuccessful,body()?.items,message()))
+        }
+    }
+
     suspend fun getVideos(pageToken:String?, listener:(Result<ResponsePage<VideoItem>>)->Unit){
         api.getVideos(pageToken).apply {
             listener(Result(isSuccessful,body(),message()))

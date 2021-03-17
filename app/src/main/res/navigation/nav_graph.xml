@@ -33,7 +33,11 @@
     <fragment
         android:id="@+id/menu"
         android:name="com.karimsinouh.youtixv2.ui.menu.MenuFragment"
-        android:label="MenuFragment" />
+        android:label="MenuFragment" >
+        <action
+            android:id="@+id/menu_to_list"
+            app:destination="@id/listFragment" />
+    </fragment>
     <fragment
         android:id="@+id/videoInfoFragment"
         android:name="com.karimsinouh.youtixv2.ui.videoInfo.VideoInfoFragment"
@@ -42,5 +46,13 @@
         android:id="@+id/viewPlaylistFragment"
         android:name="com.karimsinouh.youtixv2.ui.viewPlaylist.ViewPlaylistFragment"
         android:label="ViewPlaylistFragment" />
+    <fragment
+        android:id="@+id/listFragment"
+        android:name="com.karimsinouh.youtixv2.ui.list.ListFragment"
+        android:label="ListFragment" >
+        <action
+            android:id="@+id/list_to_viewVideo"
+            app:destination="@id/videoInfoFragment" />
+    </fragment>
 
 </navigation>
