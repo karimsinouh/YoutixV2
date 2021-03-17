@@ -24,7 +24,6 @@ class PlayerActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListene
     private lateinit var videoId:String
     private lateinit var db:Database
     private var seeked=false
-    private var currentMillis=6
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
