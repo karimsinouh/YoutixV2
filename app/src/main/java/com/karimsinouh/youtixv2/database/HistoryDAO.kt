@@ -15,7 +15,7 @@ interface HistoryDAO {
     suspend fun get(videoId: String):HistoryItem
 
     @Insert(entity = HistoryItem::class)
-    suspend fun add(item:HistoryItem,onConflict: Int = OnConflictStrategy.REPLACE)
+    suspend fun add(item:HistoryItem)
 
     @Delete(entity = HistoryItem::class)
     suspend fun delete(item:HistoryItem)

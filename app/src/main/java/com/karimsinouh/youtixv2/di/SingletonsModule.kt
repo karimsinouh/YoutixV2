@@ -40,7 +40,7 @@ object SingletonsModule {
     @Provides
     @Singleton
     fun provideDatabaseInstance(@ApplicationContext c:Context)=
-            Room.databaseBuilder(c,Database::class.java,"database").build()
+            Room.databaseBuilder(c,Database::class.java,"database").fallbackToDestructiveMigration().build()
 
 
 }

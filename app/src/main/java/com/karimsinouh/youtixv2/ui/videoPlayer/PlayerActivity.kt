@@ -22,7 +22,6 @@ class PlayerActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListene
 
     private lateinit var binding:ActivityPlayerBinding
     private lateinit var videoId:String
-    private lateinit var db: Database
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +33,6 @@ class PlayerActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListene
 
         binding.player.initialize(API_KEY,this)
 
-        db=Room.databaseBuilder(this,Database::class.java,"database").build()
 
     }
 
@@ -83,26 +81,30 @@ class PlayerActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListene
     }
 
 
+
     private fun existsInHistory( listener:(exists:Boolean,historyItem:HistoryItem?)->Unit )= CoroutineScope(Dispatchers.IO).launch{
+        /*
         val exists=db.watchLater().exists(videoId)
         if(exists){
             val item=db.history().get(videoId)
             listener(true,item)
         }else
             listener(false,null)
+
+         */
     }
 
     private fun addToHistory(duration: Int){
         CoroutineScope(Dispatchers.IO).launch {
             val item=HistoryItem(videoId,duration,0)
-            db.history().add(item)
+           // db.history().add(item)
         }
     }
 
 
     private fun updateMillis(millis:Int){
         CoroutineScope(Dispatchers.IO).launch {
-            db.history().updateMillis(videoId,millis)
+           //db.history().updateMillis(videoId,millis)
         }
     }
 
