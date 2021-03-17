@@ -6,8 +6,10 @@ import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.RequestManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.karimsinouh.youtixv2.R
 import com.karimsinouh.youtixv2.adapters.PlaylistVideosAdapter
 import com.karimsinouh.youtixv2.data.items.VideoItem
@@ -25,8 +27,9 @@ class ViewPlaylistFragment:Fragment(R.layout.fragment_view_playlist) {
 
     private lateinit var binding:FragmentViewPlaylistBinding
     private lateinit var playlistId:String
-    private lateinit var playlistName:String
+    private lateinit var dialog:MaterialAlertDialogBuilder
 
+    private lateinit var playlistName:String
     @Inject lateinit var glide:RequestManager
     @Inject lateinit var adapter:PlaylistVideosAdapter
 
@@ -38,6 +41,12 @@ class ViewPlaylistFragment:Fragment(R.layout.fragment_view_playlist) {
 
         playlistId=arguments?.getString(PLAYLIST_ID)!!
         playlistName=arguments?.getString(PLAYLIST_NAME)!!
+
+        dialog=MaterialAlertDialogBuilder(requireContext())
+                .setTitle(getString(R.string.alert))
+                .setPositiveButton(getString(R.string.ok)){_,_->
+                    findNavController().popBackStack()
+                }
 
         binding.playlistTitle.text=playlistName
 
@@ -71,7 +80,8 @@ class ViewPlaylistFragment:Fragment(R.layout.fragment_view_playlist) {
         }
 
         vm.error.observe(viewLifecycleOwner){
-            Toast.makeText(requireContext(),it,Toast.LENGTH_SHORT).show()
+            dialog.setMessage(it).show()
+            binding.bar.visibility=View.GONE
         }
     }
 

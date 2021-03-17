@@ -14,6 +14,7 @@ import com.karimsinouh.youtixv2.R
 import com.karimsinouh.youtixv2.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
