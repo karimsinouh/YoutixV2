@@ -1,6 +1,7 @@
 package com.karimsinouh.youtixv2.ui.videoPlayer
 
 import android.os.Bundle
+import android.util.Log
 import android.view.WindowManager
 import androidx.room.Room
 import com.google.android.youtube.player.YouTubeBaseActivity
@@ -19,9 +20,11 @@ import javax.inject.Inject
 
 class PlayerActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListener {
 
-
     private lateinit var binding:ActivityPlayerBinding
     private lateinit var videoId:String
+    private lateinit var db:Database
+    private var seeked=false
+    private var currentMillis=6
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,12 +36,10 @@ class PlayerActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListene
 
         binding.player.initialize(API_KEY,this)
 
-
+        db=Room.databaseBuilder(this,Database::class.java,"database").fallbackToDestructiveMigration().build()
     }
 
     override fun onInitializationSuccess(p0: YouTubePlayer.Provider?, player: YouTubePlayer?, p2: Boolean) {
-
-
 
         player?.loadVideo(videoId)
         player?.setShowFullscreenButton(false)
@@ -47,12 +48,15 @@ class PlayerActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListene
             override fun onPlaying() {
                 existsInHistory{exists, historyItem ->
                     if (exists){
-                        historyItem?.currentMillis?.let {
-                            player.seekToMillis(it)
-                        }
+                        if (!seeked)
+                            historyItem?.currentMillis?.let {
+                                player.seekToMillis(it)
+                                seeked=true
+                            }
                     }else{
                         addToHistory(player.durationMillis)
                     }
+                    Log.d("wtf",exists.toString())
                 }
             }
 
@@ -83,29 +87,28 @@ class PlayerActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListene
 
 
     private fun existsInHistory( listener:(exists:Boolean,historyItem:HistoryItem?)->Unit )= CoroutineScope(Dispatchers.IO).launch{
-        /*
-        val exists=db.watchLater().exists(videoId)
+        val exists=db.history().exists(videoId)
         if(exists){
             val item=db.history().get(videoId)
             listener(true,item)
         }else
             listener(false,null)
-
-         */
     }
 
     private fun addToHistory(duration: Int){
         CoroutineScope(Dispatchers.IO).launch {
             val item=HistoryItem(videoId,duration,0)
-           // db.history().add(item)
+            db.history().add(item)
+            Log.d("wtf","add $duration")
         }
     }
 
 
     private fun updateMillis(millis:Int){
-        CoroutineScope(Dispatchers.IO).launch {
-           //db.history().updateMillis(videoId,millis)
-        }
+        if(millis>6)
+            CoroutineScope(Dispatchers.IO).launch {
+                db.history().updateMillis(videoId,millis)
+            }
     }
 
 }

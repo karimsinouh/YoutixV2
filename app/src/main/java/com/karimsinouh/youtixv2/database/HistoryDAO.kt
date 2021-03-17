@@ -11,7 +11,7 @@ interface HistoryDAO {
     @Query("SELECT * FROM HistoryItem")
     fun list():LiveData<List<HistoryItem>>
 
-    @Query("SELECT * FROM HistoryItem WHERE id =:videoId")
+    @Query("SELECT * FROM HistoryItem WHERE videoId =:videoId")
     suspend fun get(videoId: String):HistoryItem
 
     @Insert(entity = HistoryItem::class)

@@ -5,6 +5,5 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class WatchLater(
-        val videoId:String,
-        @PrimaryKey(autoGenerate = true) val id:Int?=null,
+        @PrimaryKey val videoId:String
 )

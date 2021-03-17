@@ -3,6 +3,7 @@ package com.karimsinouh.youtixv2.ui.list
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
@@ -17,6 +18,7 @@ import com.karimsinouh.youtixv2.data.items.VideoItem
 import com.karimsinouh.youtixv2.databinding.FragmentListBinding
 import com.karimsinouh.youtixv2.utils.ACTION
 import com.karimsinouh.youtixv2.utils.ACTION_HISTORY
+import com.karimsinouh.youtixv2.utils.VIDEO_ID
 import dagger.hilt.android.AndroidEntryPoint
 import java.lang.StringBuilder
 import javax.inject.Inject
@@ -51,7 +53,15 @@ class ListFragment:Fragment(R.layout.fragment_list) {
             nav.popBackStack()
         }
 
+        adapter.setOnClickListener {
+            navigateToVideoInfo(it.id!!)
+        }
 
+
+    }
+
+    private fun navigateToVideoInfo(videoId:String){
+        nav.navigate(R.id.list_to_viewVideo, bundleOf(VIDEO_ID to videoId))
     }
 
     private fun setupRcv()=binding.rcv.apply{
