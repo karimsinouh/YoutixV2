@@ -1,10 +1,7 @@
 package com.karimsinouh.youtixv2.database
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 import com.karimsinouh.youtixv2.data.entities.HistoryItem
 
 
@@ -18,7 +15,7 @@ interface HistoryDAO {
     suspend fun get(videoId: String):HistoryItem
 
     @Insert(entity = HistoryItem::class)
-    suspend fun add(item:HistoryItem)
+    suspend fun add(item:HistoryItem,onConflict: Int = OnConflictStrategy.REPLACE)
 
     @Delete(entity = HistoryItem::class)
     suspend fun delete(item:HistoryItem)

@@ -11,5 +11,5 @@ data class HistoryItem(
         val videoId:String,
         val duration:Int,
         val currentMillis:Int,
-        @PrimaryKey(autoGenerate = true) val id:Int?=0,
+        @PrimaryKey(autoGenerate = true) val id:Int?=null,
 )

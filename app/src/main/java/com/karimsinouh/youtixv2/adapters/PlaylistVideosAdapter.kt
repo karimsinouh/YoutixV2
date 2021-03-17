@@ -51,7 +51,10 @@ class PlaylistVideosAdapter @Inject constructor(
     //diff utils
     private val diffCallback=object: DiffUtil.ItemCallback<VideoItem>(){
         override fun areItemsTheSame(oldItem: VideoItem, newItem: VideoItem)=
-                oldItem.snippet.resourceId?.videoId==oldItem.snippet.resourceId?.videoId
+            if(oldItem.snippet.resourceId?.videoId!=null)
+                oldItem.snippet.resourceId.videoId==newItem.snippet.resourceId?.videoId
+            else
+                oldItem.id==newItem.id
 
         override fun areContentsTheSame(oldItem: VideoItem, newItem: VideoItem)=
                 oldItem.snippet.hashCode()==oldItem.snippet.hashCode()

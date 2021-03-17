@@ -3,6 +3,7 @@ package com.karimsinouh.youtixv2.database
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.karimsinouh.youtixv2.data.entities.WatchLater
 
@@ -16,7 +17,7 @@ interface WatchLaterDAO {
     @Query("DELETE FROM WatchLater WHERE videoId =:videoId")
     suspend fun delete(videoId:String)
 
-    @Insert(entity = WatchLater::class)
+    @Insert(entity = WatchLater::class,onConflict = OnConflictStrategy.REPLACE)
     suspend fun add(item:WatchLater)
 
     @Query("SELECT EXISTS (SELECT 1 FROM WatchLater WHERE videoId=:videoId) ")
