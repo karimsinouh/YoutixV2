@@ -54,8 +54,6 @@ class VideoInfoFragment: Fragment(R.layout.fragment_video_info) {
 
     private fun bindVideo(video:VideoItem)=binding.apply{
 
-        val id=video.id!!
-
         glide.load(video.snippet.thumbnails.medium.url).into(thumbnail)
         title.text=video.snippet.title
         description.text=video.snippet.description
@@ -70,6 +68,16 @@ class VideoInfoFragment: Fragment(R.layout.fragment_video_info) {
 
         vm.exists{
             later.isChecked=it
+        }
+
+        vm.existsInHistory{exists, historyItem ->
+            if(exists){
+                watchBar.visibility=View.VISIBLE
+                val progress=historyItem?.currentMillis?.toFloat()!! /historyItem.duration.toFloat()* 100
+                watchBar.progress=progress.toInt()
+            }else{
+                binding.watchBar.visibility=View.GONE
+            }
         }
 
         later.setOnCheckedChangeListener { _, isChecked ->

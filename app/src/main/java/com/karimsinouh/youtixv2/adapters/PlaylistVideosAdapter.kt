@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
 import com.karimsinouh.youtixv2.data.items.VideoItem
 import com.karimsinouh.youtixv2.databinding.ItemPlaylistVideoBinding
+import java.lang.NullPointerException
 import javax.inject.Inject
 
 class PlaylistVideosAdapter @Inject constructor(
@@ -17,7 +18,13 @@ class PlaylistVideosAdapter @Inject constructor(
     inner class PlaylistVideoHolder(private val binding:ItemPlaylistVideoBinding):RecyclerView.ViewHolder(binding.root){
 
         fun bind(item: VideoItem)=binding.apply{
-            glide.load(item.snippet.thumbnails.medium.url).into(thumbnail)
+
+            try {
+                glide.load(item.snippet.thumbnails.medium.url).into(thumbnail)
+            }catch (e:NullPointerException){
+                glide.load("https://i.ytimg.com/img/no_thumbnail.jpg").into(thumbnail)
+            }
+
             title.text=item.snippet.title
 
             root.setOnClickListener { _->

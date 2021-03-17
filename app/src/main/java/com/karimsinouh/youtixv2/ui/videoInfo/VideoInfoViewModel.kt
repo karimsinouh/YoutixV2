@@ -5,9 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.karimsinouh.youtixv2.api.Repository
+import com.karimsinouh.youtixv2.data.entities.HistoryItem
 import com.karimsinouh.youtixv2.data.entities.WatchLater
 import com.karimsinouh.youtixv2.data.items.VideoItem
-import com.karimsinouh.youtixv2.database.Database
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -49,5 +49,15 @@ class VideoInfoViewModel @Inject constructor(
             viewModelScope.launch {
                 result(repo.db.watchLater().exists(video.value?.id!!))
             }
+
+    fun existsInHistory(result:(exists:Boolean,item:HistoryItem?)->Unit){
+        val id:String=video.value?.id!!
+        viewModelScope.launch {
+            if(repo.db.history().exists(id))
+                result(true,repo.db.history().get(id))
+            else
+                result(false,null)
+        }
+    }
 
 }

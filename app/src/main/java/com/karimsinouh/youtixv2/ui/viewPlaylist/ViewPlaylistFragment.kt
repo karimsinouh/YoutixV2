@@ -83,10 +83,36 @@ class ViewPlaylistFragment:Fragment(R.layout.fragment_view_playlist) {
             likes.text=ViewsFormatter.format(video.statistics?.likeCount!!)
             views.text=ViewsFormatter.format(video.statistics.viewCount)
             dislikes.text=ViewsFormatter.format(video.statistics.dislikeCount)
+
+            //in watch later
+            vm.exists {
+                binding.later.isChecked=it
+            }
+
+            binding.later.setOnCheckedChangeListener { _, isChecked ->
+                if(isChecked)
+                    vm.addToWatchLater()
+                else
+                    vm.deleteFromWatchLater()
+            }
+
+            vm.existsInHistory { exists, item ->
+                if(exists){
+                    binding.watchBar.visibility=View.VISIBLE
+                    val progress=item?.currentMillis?.toFloat()!! / item.duration.toFloat() *100
+                    binding.watchBar.progress=progress.toInt()
+                }else{
+                    binding.watchBar.visibility=View.GONE
+                }
+            }
         }
 
         playButton.setOnClickListener {
-            navigateToPlayer(video.snippet.resourceId?.videoId!!)
+            if(video.snippet.resourceId?.videoId!=null){
+                navigateToPlayer(video.snippet.resourceId.videoId)
+            }else{
+                navigateToPlayer(video.id!!)
+            }
         }
 
     }
