@@ -169,8 +169,8 @@ class ViewPlaylistFragment:Fragment(R.layout.fragment_view_playlist) {
         addOnScrollListener(object : RecyclerView.OnScrollListener(){
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                val canScroll=vm.videos.value?.isNotEmpty()!! && vm.nextPageToken!="" || vm.videos.value?.isEmpty()!! && vm.nextPageToken==""
-                if(!canScrollVertically(1) && !isLoading && canScroll)
+                val canLoadeMore=vm.videos.value?.isNotEmpty()!! && vm.nextPageToken!="" || vm.videos.value?.isEmpty()!! && vm.nextPageToken==""
+                if(!canScrollVertically(1) && !isLoading && canLoadeMore)
                     loadVideos()
             }
         })

@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.karimsinouh.youtixv2.R
 import com.karimsinouh.youtixv2.adapters.SearchItemsAdapter
@@ -29,6 +30,8 @@ class SearchFragment:Fragment(R.layout.fragment_search) {
     private lateinit var binding:FragmentSearchBinding
     private lateinit var builder:MaterialAlertDialogBuilder
     private lateinit var nav:NavController
+
+    private var isLoading=true
 
     @Inject lateinit var adapter:SearchItemsAdapter
     private lateinit var lManager:LinearLayoutManager
@@ -72,19 +75,31 @@ class SearchFragment:Fragment(R.layout.fragment_search) {
         layoutManager=lManager
         setHasFixedSize(true)
         adapter=this@SearchFragment.adapter
+
+        addOnScrollListener(object :RecyclerView.OnScrollListener(){
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                val canLoadMore=vm.result.value?.isNotEmpty()!! && vm.nextPageToken!="" || vm.result.value?.isEmpty()!! && vm.nextPageToken==""
+                if(!canScrollVertically(1) && !isLoading && canLoadMore && vm.result.value?.isNotEmpty()!! )
+                    loadMore()
+            }
+        })
     }
 
     private fun subscribeToObservers(){
 
         vm.result.observe(viewLifecycleOwner){
             if (it.isEmpty()){
-                Toast.makeText(requireContext(),"No results",Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(),"No results for: ${vm.query}",Toast.LENGTH_SHORT).show()
                 binding.bar.visibility=View.GONE
             }else{
                 adapter.submitList(it)
                 binding.bar.visibility=View.GONE
                 binding.rcv.visibility=View.VISIBLE
             }
+            isLoading=false
+            binding.loadMoreBar.visibility=View.GONE
         }
 
         vm.error.observe(viewLifecycleOwner){
@@ -97,9 +112,14 @@ class SearchFragment:Fragment(R.layout.fragment_search) {
         binding.bar.visibility=View.VISIBLE
         binding.rcv.visibility=View.GONE
 
-        lifecycleScope.launch {
-            vm.search(q)
-        }
+        vm.search(q)
+
+    }
+
+    private fun loadMore(){
+        vm.search(vm.query,loadMore = true)
+        binding.loadMoreBar.visibility=View.VISIBLE
+        isLoading=true
     }
 
 }

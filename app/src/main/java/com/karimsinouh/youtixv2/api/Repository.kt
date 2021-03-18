@@ -55,8 +55,8 @@ class Repository @Inject constructor(
         }
     }
 
-    suspend fun search(q:String,listener:(Result<ResponsePage<SearchItem>>)->Unit){
-        api.search(q).apply {
+    suspend fun search(q:String,pageToken: String?,listener:(Result<ResponsePage<SearchItem>>)->Unit){
+        api.search(q,pageToken).apply {
             listener(Result(isSuccessful,body(),message()))
         }
     }
