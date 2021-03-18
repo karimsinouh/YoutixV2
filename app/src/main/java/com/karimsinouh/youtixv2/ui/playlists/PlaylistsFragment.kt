@@ -33,6 +33,7 @@ class PlaylistsFragment:Fragment(R.layout.fragment_playlists) {
     private val vm by activityViewModels<MainViewModel>()
     private var isLoading=true
 
+    private lateinit var lManager:LinearLayoutManager
     @Inject lateinit var adapter:PlaylistsAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -55,7 +56,8 @@ class PlaylistsFragment:Fragment(R.layout.fragment_playlists) {
     }
 
     private fun setupRcv()=binding.rcv.apply{
-        layoutManager=LinearLayoutManager(requireContext())
+        lManager= LinearLayoutManager(requireContext())
+        layoutManager=lManager
         setHasFixedSize(true)
         adapter=this@PlaylistsFragment.adapter
 

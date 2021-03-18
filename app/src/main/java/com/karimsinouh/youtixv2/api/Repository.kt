@@ -49,17 +49,9 @@ class Repository @Inject constructor(
         }
     }
 
-    suspend fun getPlaylistVideos(playlistId:String,listener:(Result<List<VideoItem>>)->Unit){
-        api.getPlaylistVideos(playlistId).apply {
-            listener(
-                    if (isSuccessful)
-                        if (body()?.items?.isNotEmpty()!!)
-                            Result(true,body()?.items,null)
-                        else
-                            Result(false,null,"This playlist doesn't have any videos")
-                    else
-                        Result(false,null,message())
-            )
+    suspend fun getPlaylistVideos(playlistId:String,pageToken: String,listener:(Result<ResponsePage<VideoItem>>)->Unit){
+        api.getPlaylistVideos(playlistId,pageToken).apply {
+            listener(Result(isSuccessful,body(),message()))
         }
     }
 

@@ -7,9 +7,11 @@ import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.karimsinouh.youtixv2.R
@@ -20,6 +22,7 @@ import com.karimsinouh.youtixv2.databinding.FragmentViewPlaylistBinding
 import com.karimsinouh.youtixv2.ui.videoPlayer.PlayerActivity
 import com.karimsinouh.youtixv2.utils.*
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import org.ocpsoft.prettytime.PrettyTime
 import java.text.SimpleDateFormat
 import java.util.*
@@ -33,6 +36,8 @@ class ViewPlaylistFragment:Fragment(R.layout.fragment_view_playlist) {
     private lateinit var dialog:MaterialAlertDialogBuilder
     private lateinit var nav:NavController
     private lateinit var playlistName:String
+    private lateinit var lManager:LinearLayoutManager
+    private var isLoading=true
 
     @Inject lateinit var glide:RequestManager
     @Inject lateinit var adapter:PlaylistVideosAdapter
@@ -63,9 +68,10 @@ class ViewPlaylistFragment:Fragment(R.layout.fragment_view_playlist) {
             binding.root.fullScroll(View.FOCUS_UP)
         }
 
-        vm.loadVideos(playlistId)
-
         subscribeToObservers()
+
+        loadVideos()
+
     }
 
     private fun subscribeToObservers(){
@@ -82,6 +88,7 @@ class ViewPlaylistFragment:Fragment(R.layout.fragment_view_playlist) {
             adapter.submitList(it)
             binding.bar.visibility=View.GONE
             binding.rcv.visibility=View.VISIBLE
+            isLoading=false
         }
 
         vm.error.observe(viewLifecycleOwner){
@@ -154,9 +161,28 @@ class ViewPlaylistFragment:Fragment(R.layout.fragment_view_playlist) {
     }
 
     private fun setupRcv()=binding.rcv.apply {
-        layoutManager=LinearLayoutManager(requireContext())
+        lManager= LinearLayoutManager(requireContext())
+        layoutManager=lManager
         setHasFixedSize(true)
         adapter=this@ViewPlaylistFragment.adapter
+
+        addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val canScroll=vm.videos.value?.isNotEmpty()!! && vm.nextPageToken!="" || vm.videos.value?.isEmpty()!! && vm.nextPageToken==""
+                if(!canScrollVertically(1) && !isLoading && canScroll)
+                    loadVideos()
+            }
+        })
+
+    }
+
+    private fun loadVideos(){
+        isLoading=true
+        binding.bar.visibility=View.VISIBLE
+        lifecycleScope.launch {
+            vm.loadVideos(playlistId)
+        }
     }
 
 }

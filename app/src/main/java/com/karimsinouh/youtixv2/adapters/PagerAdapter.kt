@@ -10,11 +10,10 @@ import com.karimsinouh.youtixv2.data.Snippet
 import com.karimsinouh.youtixv2.data.items.VideoItem
 import com.karimsinouh.youtixv2.databinding.ItemPagerHeaderBinding
 import javax.inject.Inject
-import javax.inject.Singleton
 
 
 class PagerAdapter @Inject constructor(
-        val glide:RequestManager
+        private val glide:RequestManager
 ):RecyclerView.Adapter<PagerAdapter.PagerHolder>() {
 
     inner class PagerHolder(private val binding:ItemPagerHeaderBinding):RecyclerView.ViewHolder(binding.root){
@@ -27,7 +26,7 @@ class PagerAdapter @Inject constructor(
             //list toggle button
             binding.listButton.setOnCheckedChangeListener { _, isChecked ->
                 onAddToList?.let {
-                    it(snippet,isChecked)
+                    it(snippet.resourceId?.videoId!!,isChecked)
                 }
             }
 
@@ -74,7 +73,7 @@ class PagerAdapter @Inject constructor(
     //callbacks
     private var onPlay: ( (Snippet)->Unit )?=null
     private var onShare: ( (Snippet)->Unit )?=null
-    private var onAddToList: ( (snippet:Snippet,isChecked:Boolean)->Unit )?=null
+    private var onAddToList: ( (id:String,isChecked:Boolean)->Unit )?=null
 
     fun onPlayClicked(listener:(Snippet)->Unit){
         onPlay=listener
@@ -84,7 +83,7 @@ class PagerAdapter @Inject constructor(
         onShare=listener
     }
 
-    fun onAddToListChanges(listener:(snippet:Snippet,isChecked:Boolean)->Unit){
+    fun onAddToListChanges(listener:(id:String,isChecked:Boolean)->Unit){
         onAddToList=listener
     }
 

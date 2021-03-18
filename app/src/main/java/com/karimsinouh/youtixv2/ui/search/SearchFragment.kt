@@ -31,6 +31,7 @@ class SearchFragment:Fragment(R.layout.fragment_search) {
     private lateinit var nav:NavController
 
     @Inject lateinit var adapter:SearchItemsAdapter
+    private lateinit var lManager:LinearLayoutManager
     private val vm by viewModels<SearchViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -67,7 +68,8 @@ class SearchFragment:Fragment(R.layout.fragment_search) {
     }
 
     private fun setupRcv()=binding.rcv.apply{
-        layoutManager=LinearLayoutManager(requireContext())
+        lManager= LinearLayoutManager(requireContext())
+        layoutManager=lManager
         setHasFixedSize(true)
         adapter=this@SearchFragment.adapter
     }

@@ -1,6 +1,7 @@
 package com.karimsinouh.youtixv2.di
 
 import android.content.Context
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.bumptech.glide.Glide
@@ -31,7 +32,6 @@ object SingletonsModule {
         RequestOptions().placeholder(R.drawable.placeholder).error(R.drawable.placeholder)
     )
 
-
     @Provides
     @Singleton
     fun provideRetrofitInstance()=
@@ -46,6 +46,7 @@ object SingletonsModule {
     @Provides
     @Singleton
     fun providePrettyTimeInstance()=PrettyTime()
+
 
 
 }

@@ -13,6 +13,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.karimsinouh.youtixv2.R
 import com.karimsinouh.youtixv2.adapters.PagerAdapter
 import com.karimsinouh.youtixv2.adapters.VideosAdapter
+import com.karimsinouh.youtixv2.api.Repository
+import com.karimsinouh.youtixv2.data.entities.WatchLater
+import com.karimsinouh.youtixv2.database.Database
 import com.karimsinouh.youtixv2.databinding.FragmentVideosBinding
 import com.karimsinouh.youtixv2.ui.main.MainViewModel
 import com.karimsinouh.youtixv2.utils.VIDEO_ID
@@ -32,6 +35,7 @@ class VideosFragment: Fragment(R.layout.fragment_videos) {
 
     @Inject lateinit var pagerAdapter: PagerAdapter
     @Inject lateinit var adapter:VideosAdapter
+    @Inject lateinit var db:Database
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -54,7 +58,19 @@ class VideosFragment: Fragment(R.layout.fragment_videos) {
             navigateToViewVideo(it.resourceId?.videoId!!)
         }
 
+        pagerAdapter.onAddToListChanges { id, isChecked ->
+            lifecycleScope.launch {
+                if (isChecked){
+                    val item=WatchLater(id)
+                    db.watchLater().add(item)
+                }else{
+                    db.watchLater().delete(id)
+                }
+            }
+        }
+
     }
+
 
 
     private fun navigateToViewVideo(id:String){
@@ -67,7 +83,7 @@ class VideosFragment: Fragment(R.layout.fragment_videos) {
             if(it.isNotEmpty()){
                 binding.bar.alpha=0f
                 adapter.submitItems(it)
-                pagerAdapter.submitList(listOf(it[1],it[2],it[3]))
+                pagerAdapter.submitList(listOf(it[0],it[1],it[it.size-1]))
             }
             isLoading=false
         }

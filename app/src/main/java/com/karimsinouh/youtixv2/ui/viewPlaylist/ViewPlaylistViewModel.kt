@@ -1,5 +1,6 @@
 package com.karimsinouh.youtixv2.ui.viewPlaylist
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,22 +16,35 @@ import javax.inject.Inject
 @HiltViewModel
 class ViewPlaylistViewModel @Inject constructor( private val repo:Repository) : ViewModel() {
 
+    var nextPageToken=""
+
     //mutable values
-    private val _videos=MutableLiveData<List<VideoItem>>()
+    private val _videos=MutableLiveData(mutableListOf<VideoItem>())
     private val _video=MutableLiveData<VideoItem>()
     private val _error=MutableLiveData<String>()
 
     //observable values
-    val videos:LiveData<List<VideoItem>> =_videos
+    val videos:LiveData<MutableList<VideoItem>> =_videos
     val video:LiveData<VideoItem> =_video
     val error:LiveData<String> =_error
 
-    fun loadVideos(playlistId:String)=viewModelScope.launch{
-        repo.getPlaylistVideos(playlistId){
-            if (it.isSuccessful)
-                _videos.postValue(it.data)
-            else
-                _error.postValue(it.message)
+    suspend fun loadVideos(playlistId:String){
+        if(videos.value?.isNotEmpty()!! && nextPageToken!="" || videos.value?.isEmpty()!! && nextPageToken=="" )
+            repo.getPlaylistVideos(playlistId,nextPageToken){
+                if (it.isSuccessful) {
+
+                    val value= mutableListOf<VideoItem>()
+                    value.addAll(videos.value ?: emptyList())
+                    value.addAll(it.data?.items ?: emptyList())
+
+                    _videos.postValue(value)
+
+                    Log.d("wtf",value.size.toString())
+
+                    nextPageToken=it.data?.nextPageToken ?: ""
+                }
+                else
+                    setError(it.message)
         }
     }
 
@@ -39,7 +53,7 @@ class ViewPlaylistViewModel @Inject constructor( private val repo:Repository) : 
             if (it.isSuccessful)
                 _video.postValue(it.data)
             else
-                _error.postValue(it.message)
+                setError(it.message)
         }
     }
 
@@ -52,19 +66,20 @@ class ViewPlaylistViewModel @Inject constructor( private val repo:Repository) : 
         repo.db.watchLater().delete(video.value?.id!!)
     }
 
-    fun exists(result:(Boolean)->Unit)=
-            viewModelScope.launch {
+    fun exists(result:(Boolean)->Unit)= viewModelScope.launch {
                 result(repo.db.watchLater().exists(video.value?.id!!))
             }
 
-    fun existsInHistory(result:(exists:Boolean,item: HistoryItem?)->Unit){
+    fun existsInHistory(result:(exists:Boolean,item: HistoryItem?)->Unit)=viewModelScope.launch{
         val id:String=video.value?.id!!
-        viewModelScope.launch {
-            if(repo.db.history().exists(id))
-                result(true,repo.db.history().get(id))
-            else
-                result(false,null)
-        }
+        if(repo.db.history().exists(id))
+            result(true,repo.db.history().get(id))
+        else
+            result(false,null)
+    }
+
+    fun setError(e: String?) {
+        _error.postValue(e?:"Something went wrong")
     }
 
 }

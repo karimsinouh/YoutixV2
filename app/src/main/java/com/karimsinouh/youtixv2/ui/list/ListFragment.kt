@@ -31,8 +31,10 @@ class ListFragment:Fragment(R.layout.fragment_list) {
     private lateinit var binding:FragmentListBinding
     private lateinit var nav:NavController
     private lateinit var action:String
+    private lateinit var lManager:LinearLayoutManager
 
     @Inject lateinit var adapter:PlaylistVideosAdapter
+
 
     private val vm by viewModels<ListViewModel>()
 
@@ -67,7 +69,8 @@ class ListFragment:Fragment(R.layout.fragment_list) {
     }
 
     private fun setupRcv()=binding.rcv.apply{
-        layoutManager=LinearLayoutManager(requireContext())
+        lManager= LinearLayoutManager(requireContext())
+        layoutManager=lManager
         setHasFixedSize(true)
         adapter=this@ListFragment.adapter
 
