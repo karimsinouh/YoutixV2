@@ -16,3 +16,5 @@ const val KIND_PLAYLIST="youtube#playlist"
 const val ACTION="action"
 const val ACTION_HISTORY="action_history"
 const val ACTION_WATCH_LATER="action_watch_later"
+
+const val SNIPPET="snippet"

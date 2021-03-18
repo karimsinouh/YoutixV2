@@ -4,21 +4,21 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.RequestManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.karimsinouh.youtixv2.R
 import com.karimsinouh.youtixv2.adapters.PlaylistVideosAdapter
+import com.karimsinouh.youtixv2.data.Snippet
 import com.karimsinouh.youtixv2.data.items.VideoItem
 import com.karimsinouh.youtixv2.databinding.FragmentViewPlaylistBinding
 import com.karimsinouh.youtixv2.ui.videoPlayer.PlayerActivity
-import com.karimsinouh.youtixv2.utils.PLAYLIST_ID
-import com.karimsinouh.youtixv2.utils.PLAYLIST_NAME
-import com.karimsinouh.youtixv2.utils.VIDEO_ID
-import com.karimsinouh.youtixv2.utils.ViewsFormatter
+import com.karimsinouh.youtixv2.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import org.ocpsoft.prettytime.PrettyTime
 import java.text.SimpleDateFormat
@@ -31,6 +31,7 @@ class ViewPlaylistFragment:Fragment(R.layout.fragment_view_playlist) {
     private lateinit var binding:FragmentViewPlaylistBinding
     private lateinit var playlistId:String
     private lateinit var dialog:MaterialAlertDialogBuilder
+    private lateinit var nav:NavController
 
     private lateinit var playlistName:String
     @Inject lateinit var glide:RequestManager
@@ -42,6 +43,7 @@ class ViewPlaylistFragment:Fragment(R.layout.fragment_view_playlist) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding= FragmentViewPlaylistBinding.bind(view)
+        nav=findNavController()
 
         playlistId=arguments?.getString(PLAYLIST_ID)!!
         playlistName=arguments?.getString(PLAYLIST_NAME)!!
@@ -133,6 +135,15 @@ class ViewPlaylistFragment:Fragment(R.layout.fragment_view_playlist) {
             }
         }
 
+        videoTitle.setOnClickListener {
+            showDescriptionDialog(video.snippet)
+        }
+
+    }
+
+    private fun showDescriptionDialog(snippet:Snippet){
+        val args= bundleOf(SNIPPET to snippet)
+        nav.navigate(R.id.view_descriptionDialog,args)
     }
 
     private fun navigateToPlayer(videoId: String) {

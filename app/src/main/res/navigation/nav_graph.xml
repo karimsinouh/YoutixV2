@@ -45,7 +45,11 @@
     <fragment
         android:id="@+id/viewPlaylistFragment"
         android:name="com.karimsinouh.youtixv2.ui.viewPlaylist.ViewPlaylistFragment"
-        android:label="ViewPlaylistFragment" />
+        android:label="ViewPlaylistFragment" >
+        <action
+            android:id="@+id/action_viewPlaylistFragment_to_descriptionBottomSheet"
+            app:destination="@id/view_descriptionDialog" />
+    </fragment>
     <fragment
         android:id="@+id/listFragment"
         android:name="com.karimsinouh.youtixv2.ui.list.ListFragment"
@@ -54,5 +58,10 @@
             android:id="@+id/list_to_viewVideo"
             app:destination="@id/videoInfoFragment" />
     </fragment>
+
+    <dialog
+        android:id="@+id/view_descriptionDialog"
+        android:name="com.karimsinouh.youtixv2.ui.descriptionBottomSheet.DescriptionBottomSheet"
+        android:label="DescriptionBottomSheet" />
 
 </navigation>
