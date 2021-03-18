@@ -15,6 +15,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import org.ocpsoft.prettytime.PrettyTime
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -41,6 +42,10 @@ object SingletonsModule {
     @Singleton
     fun provideDatabaseInstance(@ApplicationContext c:Context)=
             Room.databaseBuilder(c,Database::class.java,"database").fallbackToDestructiveMigration().build()
+
+    @Provides
+    @Singleton
+    fun providePrettyTimeInstance()=PrettyTime()
 
 
 }

@@ -17,6 +17,8 @@ import com.karimsinouh.youtixv2.utils.ViewsFormatter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.ocpsoft.prettytime.PrettyTime
+import java.text.SimpleDateFormat
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -27,6 +29,7 @@ class VideoInfoFragment: Fragment(R.layout.fragment_video_info) {
     private val vm by viewModels<VideoInfoViewModel>()
 
     @Inject lateinit var glide:RequestManager
+    @Inject lateinit var prettyTime: PrettyTime
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -58,6 +61,10 @@ class VideoInfoFragment: Fragment(R.layout.fragment_video_info) {
         glide.load(video.snippet.thumbnails.medium.url).into(thumbnail)
         title.text=video.snippet.title
         description.text=video.snippet.description
+
+        val dateFormatter= SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+        val time=dateFormatter.parse(video.snippet.publishedAt)
+        date.text=prettyTime.format(time)
 
         views.text=ViewsFormatter.format(video.statistics?.viewCount ?: 0)
         likes.text=ViewsFormatter.format(video.statistics?.likeCount ?: 0)

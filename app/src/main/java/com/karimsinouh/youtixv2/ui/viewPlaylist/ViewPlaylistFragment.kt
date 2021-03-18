@@ -20,6 +20,9 @@ import com.karimsinouh.youtixv2.utils.PLAYLIST_NAME
 import com.karimsinouh.youtixv2.utils.VIDEO_ID
 import com.karimsinouh.youtixv2.utils.ViewsFormatter
 import dagger.hilt.android.AndroidEntryPoint
+import org.ocpsoft.prettytime.PrettyTime
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -32,6 +35,7 @@ class ViewPlaylistFragment:Fragment(R.layout.fragment_view_playlist) {
     private lateinit var playlistName:String
     @Inject lateinit var glide:RequestManager
     @Inject lateinit var adapter:PlaylistVideosAdapter
+    @Inject lateinit var prettyTime: PrettyTime
 
     private val vm by viewModels<ViewPlaylistViewModel>()
 
@@ -88,6 +92,10 @@ class ViewPlaylistFragment:Fragment(R.layout.fragment_view_playlist) {
     private fun bind(video:VideoItem,withStatistics:Boolean?=false)=binding.apply{
         videoTitle.text=video.snippet.title
         glide.load(video.snippet.thumbnails.medium.url).into(thumbnail)
+
+        val dateFormatter=SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+        val time=dateFormatter.parse(video.snippet.publishedAt)
+        date.text=prettyTime.format(time)
 
         if (withStatistics!!){
             likes.text=ViewsFormatter.format(video.statistics?.likeCount!!)
