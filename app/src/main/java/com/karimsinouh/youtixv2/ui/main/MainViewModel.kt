@@ -13,8 +13,8 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(private val repo:Repository):ViewModel() {
 
     //page tokens
-    private var videosNextPageToken=""
-    private var playlistsNextPageToken=""
+    var videosNextPageToken=""
+    var playlistsNextPageToken=""
 
     //mutable live data
     private val _videos = MutableLiveData(mutableListOf<VideoItem>())
@@ -27,34 +27,37 @@ class MainViewModel @Inject constructor(private val repo:Repository):ViewModel()
     val error:LiveData<String> =_error
 
 
-    suspend fun loadVideos()=
+    suspend fun loadVideos(){
+        if(videos.value?.isNotEmpty()!! && videosNextPageToken!="" || videos.value?.isEmpty()!! && videosNextPageToken=="")
             repo.getVideos(videosNextPageToken){
                 if (it.isSuccessful)
                     _videos.value?.let {value->
-                        value.addAll(it.data?.items ?: emptyList())
+                        value.addAll(it.data?.items?: emptyList())
                         _videos.postValue(value)
                         videosNextPageToken=it.data?.nextPageToken ?: ""
                     }
                 else
                     _error.postValue(it.message)
             }
+    }
 
     suspend fun loadPlaylists(){
+        if (playlists.value?.isNotEmpty()!! && playlistsNextPageToken!="" || playlists.value?.isEmpty()!! && playlistsNextPageToken=="")
+            repo.getPlaylists(playlistsNextPageToken){
 
-        repo.getPlaylists(playlistsNextPageToken){
-
-            if(it.isSuccessful){
-                _playlists.value?.let { value->
-                    value.addAll(it.data?.items ?: emptyList())
-                    _playlists.postValue(value)
-                    playlistsNextPageToken=it.data?.nextPageToken ?: ""
+                if(it.isSuccessful){
+                    _playlists.value?.let { value->
+                        value.addAll(it.data?.items ?: emptyList())
+                        _playlists.postValue(value)
+                        playlistsNextPageToken=it.data?.nextPageToken ?: ""
+                    }
+                }else{
+                    _error.postValue(it.message)
                 }
-            }else{
-                _error.postValue(it.message)
             }
-
-        }
-
     }
+
+
+
 
 }

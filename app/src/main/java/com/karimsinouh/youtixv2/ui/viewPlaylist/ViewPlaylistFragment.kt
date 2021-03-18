@@ -1,9 +1,9 @@
 package com.karimsinouh.youtixv2.ui.viewPlaylist
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -32,12 +32,11 @@ class ViewPlaylistFragment:Fragment(R.layout.fragment_view_playlist) {
     private lateinit var playlistId:String
     private lateinit var dialog:MaterialAlertDialogBuilder
     private lateinit var nav:NavController
-
     private lateinit var playlistName:String
+
     @Inject lateinit var glide:RequestManager
     @Inject lateinit var adapter:PlaylistVideosAdapter
     @Inject lateinit var prettyTime: PrettyTime
-
     private val vm by viewModels<ViewPlaylistViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -91,7 +90,8 @@ class ViewPlaylistFragment:Fragment(R.layout.fragment_view_playlist) {
         }
     }
 
-    private fun bind(video:VideoItem,withStatistics:Boolean?=false)=binding.apply{
+    @SuppressLint("SimpleDateFormat")
+    private fun bind(video:VideoItem, withStatistics:Boolean?=false)=binding.apply{
         videoTitle.text=video.snippet.title
         glide.load(video.snippet.thumbnails.medium.url).into(thumbnail)
 
@@ -149,8 +149,8 @@ class ViewPlaylistFragment:Fragment(R.layout.fragment_view_playlist) {
     private fun navigateToPlayer(videoId: String) {
         val intent=Intent(requireContext(),PlayerActivity::class.java).also {
             it.putExtra(VIDEO_ID,videoId)
-            activity?.startActivity(it)
         }
+        activity?.startActivity(intent)
     }
 
     private fun setupRcv()=binding.rcv.apply {

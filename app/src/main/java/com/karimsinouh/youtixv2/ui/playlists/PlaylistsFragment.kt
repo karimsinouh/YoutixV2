@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.karimsinouh.youtixv2.R
 import com.karimsinouh.youtixv2.adapters.PlaylistsAdapter
 import com.karimsinouh.youtixv2.api.Repository
@@ -30,6 +31,7 @@ class PlaylistsFragment:Fragment(R.layout.fragment_playlists) {
     private lateinit var binding:FragmentPlaylistsBinding
     private lateinit var nav:NavController
     private val vm by activityViewModels<MainViewModel>()
+    private var isLoading=true
 
     @Inject lateinit var adapter:PlaylistsAdapter
 
@@ -56,6 +58,23 @@ class PlaylistsFragment:Fragment(R.layout.fragment_playlists) {
         layoutManager=LinearLayoutManager(requireContext())
         setHasFixedSize(true)
         adapter=this@PlaylistsFragment.adapter
+
+        addOnScrollListener(object: RecyclerView.OnScrollListener(){
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val canLoad=vm.playlists.value?.isNotEmpty()!! && vm.playlistsNextPageToken!="" || vm.playlists.value?.isEmpty()!! && vm.playlistsNextPageToken==""
+                if (!canScrollVertically(1) && !isLoading && canLoad)
+                    loadMore()
+            }
+        })
+
+    }
+
+    private fun loadMore(){
+        lifecycleScope.launch {
+            vm.loadPlaylists()
+        }
+        binding.loadMoreBar.visibility=View.VISIBLE
     }
 
     private fun subscribeToObservers(){
@@ -65,7 +84,8 @@ class PlaylistsFragment:Fragment(R.layout.fragment_playlists) {
                 binding.bar.visibility=View.GONE
                 adapter.submitList(it)
             }
-            Log.d("wtf",it.size.toString())
+            isLoading=false
+            binding.loadMoreBar.visibility=View.GONE
         }
 
     }
