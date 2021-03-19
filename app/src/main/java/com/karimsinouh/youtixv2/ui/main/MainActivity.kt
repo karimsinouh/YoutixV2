@@ -12,9 +12,9 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.karimsinouh.youtixv2.R
 import com.karimsinouh.youtixv2.databinding.ActivityMainBinding
+import com.karimsinouh.youtixv2.utils.Connectivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 
 @AndroidEntryPoint
@@ -47,20 +47,16 @@ class MainActivity : AppCompatActivity() {
 
         vm=ViewModelProvider(this).get(MainViewModel::class.java)
 
-        lifecycleScope.launch {
-            if(vm.videos.value?.isEmpty()!!)
-                vm.loadVideos()
-        }
-
-        lifecycleScope.launch {
-            if(vm.playlists.value?.isEmpty()!!)
-                vm.loadPlaylists()
-        }
-
-
         builder=MaterialAlertDialogBuilder(this)
                 .setTitle(getString(R.string.alert))
                 .setPositiveButton(getString(R.string.ok),null)
+
+        binding.tryAgain.setOnClickListener {
+            binding.connectivityError.visibility=View.GONE
+            load()
+        }
+
+        load()
 
         subscribeToObservers()
 
@@ -72,6 +68,26 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
+    private fun load(){
+        if (Connectivity.hasInternet(this)){
+
+            lifecycleScope.launch {
+                if(vm.videos.value?.isEmpty()!!)
+                    vm.loadVideos()
+            }
+
+            lifecycleScope.launch {
+                if(vm.playlists.value?.isEmpty()!!)
+                    vm.loadPlaylists()
+            }
+
+        }else{
+
+            binding.connectivityError.visibility=View.VISIBLE
+
+        }
+    }
 
 
 }

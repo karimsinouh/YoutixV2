@@ -37,7 +37,7 @@ class MainViewModel @Inject constructor(private val repo:Repository):ViewModel()
                         videosNextPageToken=it.data?.nextPageToken ?: ""
                     }
                 else
-                    _error.postValue(it.message)
+                    setError(it.message)
             }
     }
 
@@ -51,13 +51,14 @@ class MainViewModel @Inject constructor(private val repo:Repository):ViewModel()
                         _playlists.postValue(value)
                         playlistsNextPageToken=it.data?.nextPageToken ?: ""
                     }
-                }else{
-                    _error.postValue(it.message)
-                }
+                }else
+                    setError(it.message)
             }
     }
 
-
+    fun setError(value:String?){
+        _error.postValue(value ?: "Something went wrong")
+    }
 
 
 }
