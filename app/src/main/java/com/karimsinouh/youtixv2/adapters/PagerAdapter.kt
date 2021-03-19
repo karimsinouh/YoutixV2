@@ -33,14 +33,14 @@ class PagerAdapter @Inject constructor(
             //play button
             binding.playButton.setOnClickListener {_->
                 onPlay?.let {
-                    it(snippet)
+                    it(snippet.resourceId?.videoId!!)
                 }
             }
 
             //share button
             binding.shareButton.setOnClickListener {_->
                 onShare?.let {
-                    it(snippet)
+                    it(snippet.resourceId?.videoId!!)
                 }
             }
         }
@@ -71,15 +71,15 @@ class PagerAdapter @Inject constructor(
     fun submitList(list:List<VideoItem>)=differ.submitList(list)
 
     //callbacks
-    private var onPlay: ( (Snippet)->Unit )?=null
-    private var onShare: ( (Snippet)->Unit )?=null
+    private var onPlay: ( (id:String)->Unit )?=null
+    private var onShare: ( (id:String)->Unit )?=null
     private var onAddToList: ( (id:String,isChecked:Boolean)->Unit )?=null
 
-    fun onPlayClicked(listener:(Snippet)->Unit){
+    fun onPlayClicked(listener:(id:String)->Unit){
         onPlay=listener
     }
 
-    fun onShareClicked(listener:(Snippet)->Unit){
+    fun onShareClicked(listener:(id:String)->Unit){
         onShare=listener
     }
 

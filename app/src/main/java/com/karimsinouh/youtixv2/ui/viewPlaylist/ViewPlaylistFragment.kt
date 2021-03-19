@@ -74,6 +74,16 @@ class ViewPlaylistFragment:Fragment(R.layout.fragment_view_playlist) {
 
     }
 
+    private fun share(id:String){
+        val url="https://youtube.com/watch?v=$id"
+        val intent=Intent().also {
+            it.action=Intent.ACTION_SEND
+            it.type="text/plain"
+            it.putExtra(Intent.EXTRA_TEXT,url)
+        }
+        requireActivity().startActivity(Intent.createChooser(intent,getString(R.string.share_video)))
+    }
+
     private fun subscribeToObservers(){
         vm.video.observe(viewLifecycleOwner){
             bind(it,true)
@@ -144,6 +154,10 @@ class ViewPlaylistFragment:Fragment(R.layout.fragment_view_playlist) {
 
         videoTitle.setOnClickListener {
             showDescriptionDialog(video.snippet)
+        }
+
+        share.setOnClickListener {
+            share(video.id!!)
         }
 
     }

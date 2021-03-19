@@ -1,5 +1,6 @@
 package com.karimsinouh.youtixv2.ui.videos
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
@@ -55,7 +56,11 @@ class VideosFragment: Fragment(R.layout.fragment_videos) {
         }
 
         pagerAdapter.onPlayClicked {
-            navigateToViewVideo(it.resourceId?.videoId!!)
+            navigateToViewVideo(it)
+        }
+
+        pagerAdapter.onShareClicked {
+            share(it)
         }
 
         pagerAdapter.onAddToListChanges { id, isChecked ->
@@ -71,6 +76,16 @@ class VideosFragment: Fragment(R.layout.fragment_videos) {
 
     }
 
+
+    private fun share(id:String){
+       val url="https://youtube.com/watch?v=$id"
+       val intent=Intent().also {
+           it.action=Intent.ACTION_SEND
+           it.type="text/plain"
+           it.putExtra(Intent.EXTRA_TEXT,url)
+       }
+        requireActivity().startActivity(Intent.createChooser(intent,getString(R.string.share_video)))
+    }
 
 
     private fun navigateToViewVideo(id:String){
@@ -110,10 +125,8 @@ class VideosFragment: Fragment(R.layout.fragment_videos) {
         binding.pager.adapter=pagerAdapter
     }
 
-    private fun loadMore(){
-        lifecycleScope.launch {
-            vm.loadVideos()
-        }
+    private fun loadMore()=lifecycleScope.launch {
+        vm.loadVideos()
     }
 
 
