@@ -1,5 +1,7 @@
 package com.karimsinouh.youtixv2.ui.menu
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
@@ -8,9 +10,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.karimsinouh.youtixv2.R
 import com.karimsinouh.youtixv2.databinding.FragmentMenuBinding
-import com.karimsinouh.youtixv2.utils.ACTION
-import com.karimsinouh.youtixv2.utils.ACTION_HISTORY
-import com.karimsinouh.youtixv2.utils.ACTION_WATCH_LATER
+import com.karimsinouh.youtixv2.utils.*
 
 class MenuFragment:Fragment(R.layout.fragment_menu) {
 
@@ -31,7 +31,21 @@ class MenuFragment:Fragment(R.layout.fragment_menu) {
             navigateToList(ACTION_WATCH_LATER)
         }
 
+        binding.viewOnYoutube.setOnClickListener {
+            val url="https://www.youtube.com/channel/$CHANNEL_ID"
+            openBrowser(url)
+        }
 
+        binding.feedback.setOnClickListener {
+            openBrowser(FEEDBACK_URL)
+        }
+
+
+    }
+
+    private fun openBrowser(url:String){
+        val intent=Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        requireActivity().startActivity(intent)
     }
 
     private fun navigateToList(action:String){

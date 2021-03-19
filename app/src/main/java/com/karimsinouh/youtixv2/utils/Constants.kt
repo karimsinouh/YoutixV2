@@ -4,6 +4,7 @@ const val BASE_URL="https://www.googleapis.com/youtube/v3/"
 const val API_KEY="AIzaSyDr519sy5ktI22CMisfGcyYOjDfYhCXQP0"
 const val CHANNEL_ID="UC_Fh8kvtkVPkeihBs42jGcA"
 const val PLAYLIST_ID="UU_Fh8kvtkVPkeihBs42jGcA"
+const val FEEDBACK_URL="https://google.com"
 
 const val VIDEO_ID="video_id"
 
