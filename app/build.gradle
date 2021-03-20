@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -88,4 +89,9 @@ dependencies {
 
     //time formatter
     implementation 'org.ocpsoft.prettytime:prettytime:4.0.4.Final'
+
+
+    //firebase
+    implementation platform('com.google.firebase:firebase-bom:26.7.0')
+    implementation 'com.google.firebase:firebase-messaging-ktx'
 }
