@@ -19,3 +19,5 @@ const val ACTION_HISTORY="action_history"
 const val ACTION_WATCH_LATER="action_watch_later"
 
 const val SNIPPET="snippet"
+
+const val NOTIFICATION_CHANNEL_ID="notification01"

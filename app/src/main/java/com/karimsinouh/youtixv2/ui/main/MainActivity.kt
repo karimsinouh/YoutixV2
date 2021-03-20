@@ -1,6 +1,7 @@
 package com.karimsinouh.youtixv2.ui.main
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -10,6 +11,8 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.ktx.messaging
 import com.karimsinouh.youtixv2.R
 import com.karimsinouh.youtixv2.databinding.ActivityMainBinding
 import com.karimsinouh.youtixv2.utils.Connectivity
@@ -59,6 +62,13 @@ class MainActivity : AppCompatActivity() {
         load()
 
         subscribeToObservers()
+
+        Firebase.messaging.subscribeToTopic("videos").addOnCompleteListener {
+            if(it.isSuccessful)
+                Log.d("topic","Successfully")
+            else
+                Log.d("topic",it.exception?.message!!)
+        }
 
     }
 
