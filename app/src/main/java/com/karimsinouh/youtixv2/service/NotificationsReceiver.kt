@@ -4,6 +4,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.NotificationManager.IMPORTANCE_HIGH
 import android.app.PendingIntent
+import android.app.PendingIntent.FLAG_ONE_SHOT
 import android.app.PendingIntent.FLAG_UPDATE_CURRENT
 import android.content.Intent
 import android.graphics.Bitmap
@@ -11,6 +12,7 @@ import android.graphics.drawable.Drawable
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
+import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
@@ -29,7 +31,6 @@ class NotificationsReceiver:FirebaseMessagingService() {
 
     @Inject lateinit var manager:NotificationManager
     @Inject lateinit var notification:NotificationCompat.Builder
-    @Inject lateinit var glide:RequestManager
 
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
@@ -39,13 +40,14 @@ class NotificationsReceiver:FirebaseMessagingService() {
 
         val data =message.data
 
-        glide.asBitmap().load(data["thumbnail"]).into(object :CustomTarget<Bitmap>(){
+        Glide.with(this).asBitmap().load(data["thumbnail"]).into(object :CustomTarget<Bitmap>(){
             override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
 
                 notification
-                    .setContentTitle(data["title"])
-                    .setStyle(NotificationCompat.BigPictureStyle().bigPicture(resource) )
-                    .setContentIntent(buildPendingIntent(data[VIDEO_ID].toString()))
+                        .setContentTitle(data["title"])
+                        .setStyle(NotificationCompat.BigPictureStyle().bigPicture(resource) )
+                        .setContentIntent(buildPendingIntent(data["videoId"].toString()))
+
 
                 val randomId= Random.nextInt()
                 manager.notify(randomId,notification.build())
@@ -65,7 +67,7 @@ class NotificationsReceiver:FirebaseMessagingService() {
             it.action="notification"
             it.putExtra(VIDEO_ID,videoId)
         }
-        return PendingIntent.getActivity(this,0,intent,FLAG_UPDATE_CURRENT)
+        return PendingIntent.getActivity(this,0,intent, FLAG_UPDATE_CURRENT)
     }
 
 

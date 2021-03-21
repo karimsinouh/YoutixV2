@@ -21,6 +21,8 @@ object ServiceModule {
     @Provides
     fun notificationBuilder(@ApplicationContext c:Context) =
         NotificationCompat.Builder(c, NOTIFICATION_CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_notification)
+                .setSmallIcon(R.drawable.ic_notification)
+                .setAutoCancel(true)
+
 
 }

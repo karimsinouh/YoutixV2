@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
@@ -16,6 +17,7 @@ import com.google.firebase.messaging.ktx.messaging
 import com.karimsinouh.youtixv2.R
 import com.karimsinouh.youtixv2.databinding.ActivityMainBinding
 import com.karimsinouh.youtixv2.utils.Connectivity
+import com.karimsinouh.youtixv2.utils.VIDEO_ID
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -70,6 +72,11 @@ class MainActivity : AppCompatActivity() {
                 Log.d("topic",it.exception?.message!!)
         }
 
+        if(intent.action=="notification"){
+            val videoId=intent.getStringExtra(VIDEO_ID)
+            openVideo(videoId!!)
+        }
+
     }
 
     private fun subscribeToObservers(){
@@ -97,6 +104,13 @@ class MainActivity : AppCompatActivity() {
             binding.connectivityError.visibility=View.VISIBLE
 
         }
+    }
+
+
+    //this functions gets triggered when the user click on a notification
+    private fun openVideo(videoId:String){
+        val args= bundleOf(VIDEO_ID to videoId)
+        nav.navigate(R.id.global_to_videoInfo,args)
     }
 
 

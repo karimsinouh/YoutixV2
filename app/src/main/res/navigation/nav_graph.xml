@@ -63,5 +63,8 @@
         android:id="@+id/view_descriptionDialog"
         android:name="com.karimsinouh.youtixv2.ui.descriptionBottomSheet.DescriptionBottomSheet"
         android:label="DescriptionBottomSheet" />
+    <action
+        android:id="@+id/global_to_videoInfo"
+        app:destination="@id/videoInfoFragment" />
 
 </navigation>
