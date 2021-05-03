@@ -12,11 +12,9 @@ import com.karimsinouh.youtixv2.database.Database
 import com.karimsinouh.youtixv2.databinding.ActivityPlayerBinding
 import com.karimsinouh.youtixv2.utils.API_KEY
 import com.karimsinouh.youtixv2.utils.VIDEO_ID
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 class PlayerActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListener {
 

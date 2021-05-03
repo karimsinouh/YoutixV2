@@ -4,7 +4,6 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.NotificationManager.IMPORTANCE_HIGH
 import android.app.PendingIntent
-import android.app.PendingIntent.FLAG_ONE_SHOT
 import android.app.PendingIntent.FLAG_UPDATE_CURRENT
 import android.content.Intent
 import android.graphics.Bitmap
@@ -13,7 +12,6 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import com.bumptech.glide.Glide
-import com.bumptech.glide.RequestManager
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.google.firebase.messaging.FirebaseMessagingService

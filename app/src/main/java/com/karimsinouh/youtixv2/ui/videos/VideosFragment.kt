@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.karimsinouh.youtixv2.R
 import com.karimsinouh.youtixv2.adapters.PagerAdapter
 import com.karimsinouh.youtixv2.adapters.VideosAdapter
-import com.karimsinouh.youtixv2.api.Repository
 import com.karimsinouh.youtixv2.data.entities.WatchLater
 import com.karimsinouh.youtixv2.database.Database
 import com.karimsinouh.youtixv2.databinding.FragmentVideosBinding

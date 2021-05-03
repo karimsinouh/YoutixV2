@@ -2,7 +2,6 @@ package com.karimsinouh.youtixv2.ui.videoInfo
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -19,7 +18,6 @@ import com.karimsinouh.youtixv2.utils.VIDEO_ID
 import com.karimsinouh.youtixv2.utils.ViewsFormatter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.ocpsoft.prettytime.PrettyTime
 import java.text.SimpleDateFormat
 import javax.inject.Inject
@@ -133,13 +131,9 @@ class VideoInfoFragment: Fragment(R.layout.fragment_video_info) {
         nestedScrollView.alpha=1f
     }
 
-    private fun hideViews()=binding.apply{
-        bar.alpha=1f
-        nestedScrollView.alpha=0f
-    }
 
     private fun navigateToPlayer(videoId: String) {
-        val intent= Intent(requireContext(), PlayerActivity::class.java).also {
+        Intent(requireContext(), PlayerActivity::class.java).also {
             it.putExtra(VIDEO_ID,videoId)
             activity?.startActivity(it)
         }

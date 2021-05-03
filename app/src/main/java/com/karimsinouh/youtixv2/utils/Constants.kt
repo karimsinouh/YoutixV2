@@ -10,15 +10,11 @@ const val FEEDBACK_URL="https://google.com"
 
 
 
-
-
 const val VIDEO_ID="video_id"
 
-const val PLAYLIST_ITEM="playlist_item"
 const val PLAYLIST_NAME="playlist_name"
 
 const val KIND_VIDEO="youtube#video"
-const val KIND_PLAYLIST="youtube#playlist"
 
 const val ACTION="action"
 const val ACTION_HISTORY="action_history"

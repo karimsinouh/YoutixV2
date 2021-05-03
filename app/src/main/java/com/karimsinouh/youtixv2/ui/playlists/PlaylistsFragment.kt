@@ -1,12 +1,10 @@
 package com.karimsinouh.youtixv2.ui.playlists
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
@@ -14,12 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.karimsinouh.youtixv2.R
 import com.karimsinouh.youtixv2.adapters.PlaylistsAdapter
-import com.karimsinouh.youtixv2.api.Repository
 import com.karimsinouh.youtixv2.data.items.PlaylistItem
 import com.karimsinouh.youtixv2.databinding.FragmentPlaylistsBinding
 import com.karimsinouh.youtixv2.ui.main.MainViewModel
 import com.karimsinouh.youtixv2.utils.PLAYLIST_ID
-import com.karimsinouh.youtixv2.utils.PLAYLIST_ITEM
 import com.karimsinouh.youtixv2.utils.PLAYLIST_NAME
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch

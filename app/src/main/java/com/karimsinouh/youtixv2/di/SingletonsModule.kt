@@ -1,12 +1,9 @@
 package com.karimsinouh.youtixv2.di
 
 import android.content.Context
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
-import androidx.room.RoomDatabase
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.karimsinouh.youtixv2.R
 import com.karimsinouh.youtixv2.api.RetrofitAPI
 import com.karimsinouh.youtixv2.database.Database

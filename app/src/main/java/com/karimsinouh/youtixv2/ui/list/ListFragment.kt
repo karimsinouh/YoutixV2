@@ -1,7 +1,6 @@
 package com.karimsinouh.youtixv2.ui.list
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -14,15 +13,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.karimsinouh.youtixv2.R
 import com.karimsinouh.youtixv2.adapters.PlaylistVideosAdapter
 import com.karimsinouh.youtixv2.data.entities.HistoryItem
-import com.karimsinouh.youtixv2.data.entities.SearchHistory
 import com.karimsinouh.youtixv2.data.entities.WatchLater
-import com.karimsinouh.youtixv2.data.items.VideoItem
 import com.karimsinouh.youtixv2.databinding.FragmentListBinding
 import com.karimsinouh.youtixv2.utils.ACTION
 import com.karimsinouh.youtixv2.utils.ACTION_HISTORY
 import com.karimsinouh.youtixv2.utils.VIDEO_ID
 import dagger.hilt.android.AndroidEntryPoint
-import java.lang.StringBuilder
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -92,7 +88,6 @@ class ListFragment:Fragment(R.layout.fragment_list) {
 
         }
 
-        val touchHelper=ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(this)
     }
 
     private fun subscribeToObservers(){
