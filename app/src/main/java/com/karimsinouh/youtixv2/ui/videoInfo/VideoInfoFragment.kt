@@ -8,6 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.RequestManager
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.karimsinouh.youtixv2.R
 import com.karimsinouh.youtixv2.data.items.VideoItem
 import com.karimsinouh.youtixv2.databinding.FragmentVideoInfoBinding
@@ -28,6 +31,9 @@ class VideoInfoFragment: Fragment(R.layout.fragment_video_info) {
     private lateinit var videoId:String
     private val vm by viewModels<VideoInfoViewModel>()
 
+    private val request=AdRequest.Builder().build()
+    private var interstitialAd: InterstitialAd?=null
+
     @Inject lateinit var glide:RequestManager
     @Inject lateinit var prettyTime: PrettyTime
 
@@ -35,6 +41,13 @@ class VideoInfoFragment: Fragment(R.layout.fragment_video_info) {
         super.onViewCreated(view, savedInstanceState)
         binding= FragmentVideoInfoBinding.bind(view)
         videoId=arguments?.getString(VIDEO_ID)!!
+
+        InterstitialAd.load(requireContext(),getString(R.string.interstitial),request,object : InterstitialAdLoadCallback(){
+            override fun onAdLoaded(p0: InterstitialAd) {
+                super.onAdLoaded(p0)
+                interstitialAd=p0
+            }
+        })
 
         lifecycleScope.launch {
             vm.loadVideo(videoId)
@@ -44,6 +57,9 @@ class VideoInfoFragment: Fragment(R.layout.fragment_video_info) {
 
     }
 
+    private fun showAd(){
+        interstitialAd?.show(requireActivity())
+    }
 
     private fun share(id:String){
         val url="https://youtube.com/watch?v=$id"
@@ -81,6 +97,7 @@ class VideoInfoFragment: Fragment(R.layout.fragment_video_info) {
         dislikes.text=ViewsFormatter.format(video.statistics?.dislikeCount ?: 0)
 
         playButton.setOnClickListener {
+            showAd()
             navigateToPlayer(videoId)
         }
 

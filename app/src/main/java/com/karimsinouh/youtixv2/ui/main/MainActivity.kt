@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.gms.ads.AdRequest
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging
@@ -77,6 +78,13 @@ class MainActivity : AppCompatActivity() {
             openVideo(videoId!!)
         }
 
+        loadAd()
+
+    }
+
+    private fun loadAd(){
+        val request=AdRequest.Builder().build()
+        binding.adView.loadAd(request)
     }
 
     private fun subscribeToObservers(){
