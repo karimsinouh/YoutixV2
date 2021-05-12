@@ -97,9 +97,9 @@ class ListFragment:Fragment(R.layout.fragment_list) {
             adapter.submitList(it)
 
             if (it.isEmpty())
-                binding.text.visibility=View.VISIBLE
+                binding.emptyLayout.visibility=View.VISIBLE
             else
-                binding.text.visibility=View.GONE
+                binding.emptyLayout.visibility=View.GONE
 
             if (binding.bar.isShown)
                 binding.bar.visibility=View.GONE
@@ -110,8 +110,7 @@ class ListFragment:Fragment(R.layout.fragment_list) {
             if(binding.bar.isShown)
                 binding.bar.visibility=View.GONE
 
-            binding.text.text=it
-            binding.text.visibility=View.VISIBLE
+            binding.emptyLayout.visibility=View.VISIBLE
         }
     }
 
