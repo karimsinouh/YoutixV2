@@ -116,5 +116,4 @@ class MainActivity : AppCompatActivity() {
         nav.navigate(R.id.global_to_videoInfo,args)
     }
 
-
 }

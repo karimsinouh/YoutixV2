@@ -1,7 +1,10 @@
 package com.karimsinouh.youtixv2.ui.videoPlayer
 
+import android.app.PictureInPictureParams
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
+import android.util.Rational
 import android.view.WindowManager
 import androidx.room.Room
 import com.google.android.youtube.player.YouTubeBaseActivity
@@ -81,8 +84,6 @@ class PlayerActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListene
 
     }
 
-
-
     private fun existsInHistory( listener:(exists:Boolean,historyItem:HistoryItem?)->Unit )= CoroutineScope(Dispatchers.IO).launch{
         val exists=db.history().exists(videoId)
         if(exists){
@@ -100,12 +101,27 @@ class PlayerActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListene
         }
     }
 
-
     private fun updateMillis(millis:Int){
         if(millis>6)
             CoroutineScope(Dispatchers.IO).launch {
                 db.history().updateMillis(videoId,millis)
             }
+    }
+
+
+    //picture in picture stuff
+
+    override fun onUserLeaveHint() {
+        super.onUserLeaveHint()
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            val pipBuilder=PictureInPictureParams.Builder().setAspectRatio(Rational(1,2)).build()
+            enterPictureInPictureMode(pipBuilder)
+        }
+    }
+
+    override fun onPictureInPictureModeChanged(isInPictureInPictureMode: Boolean, newConfig: Configuration?) {
+        super.onPictureInPictureModeChanged(isInPictureInPictureMode, newConfig)
+
     }
 
 }

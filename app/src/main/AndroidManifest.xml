@@ -20,6 +20,9 @@
             android:value="@string/app_id"/>
 
         <activity
+            android:supportsPictureInPicture="true"
+            android:configChanges=
+                "screenSize|smallestScreenSize|screenLayout|orientation"
             android:name=".ui.videoPlayer.PlayerActivity"
             android:screenOrientation="landscape" />
 
