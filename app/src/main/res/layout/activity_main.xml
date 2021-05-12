@@ -31,33 +31,22 @@
         app:layout_constraintTop_toBottomOf="@+id/connectivityError"
         app:navGraph="@navigation/nav_graph" />
 
-    <LinearLayout
-        android:visibility="gone"
+
+    <TextView
+        android:padding="6dp"
+        android:scrollbarSize="10sp"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:background="@color/primary"
         android:id="@+id/connectivityError"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:padding="12dp"
+        android:text="@string/no_internet"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:text="@string/no_internet"
-            android:textSize="18sp" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/tryAgain"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/try_again" />
-    </LinearLayout>
 
     <com.google.android.gms.ads.AdView
         android:id="@+id/adView"

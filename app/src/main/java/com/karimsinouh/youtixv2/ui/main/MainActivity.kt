@@ -57,11 +57,6 @@ class MainActivity : AppCompatActivity() {
                 .setTitle(getString(R.string.alert))
                 .setPositiveButton(getString(R.string.ok),null)
 
-        binding.tryAgain.setOnClickListener {
-            binding.connectivityError.visibility=View.GONE
-            load()
-        }
-
         load()
 
         subscribeToObservers()
