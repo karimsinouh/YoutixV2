@@ -9,35 +9,6 @@
       "client_info": {
         "mobilesdk_app_id": "1:461267316646:android:62ef6f9802541699972967",
         "android_client_info": {
-          "package_name": "com.karimsinouh.youtix"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "461267316646-igbm4bpb77s65acbtblfmq5i2lur0ubj.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBouo0pTtNzSOeeLVX0VfruEwn-iAJn7sA"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "461267316646-igbm4bpb77s65acbtblfmq5i2lur0ubj.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:461267316646:android:15ac3c2e557a483c972967",
-        "android_client_info": {
           "package_name": "com.karimsinouh.youtixv2"
         }
       },
