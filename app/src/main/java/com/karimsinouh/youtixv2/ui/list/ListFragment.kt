@@ -1,5 +1,8 @@
 package com.karimsinouh.youtixv2.ui.list
 
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
@@ -28,6 +31,23 @@ class ListFragment:Fragment(R.layout.fragment_list) {
     private lateinit var nav:NavController
     private lateinit var action:String
     private lateinit var lManager:LinearLayoutManager
+
+    private val swipeCallback by lazy {
+        object : SwipeCallback(requireContext()){
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position=viewHolder.adapterPosition
+                if (action== ACTION_HISTORY)
+                    vm.deleteFromHistory(position)
+                else
+                    vm.deleteFromWatchLater(position)
+            }
+
+        }
+    }
+
+    private val itemTouchHelper by lazy{
+        ItemTouchHelper(swipeCallback)
+    }
 
     @Inject lateinit var adapter:PlaylistVideosAdapter
 
@@ -70,24 +90,7 @@ class ListFragment:Fragment(R.layout.fragment_list) {
         setHasFixedSize(true)
         adapter=this@ListFragment.adapter
 
-
-        val itemTouchHelperCallback=object : ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.RIGHT){
-            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
-               return false
-            }
-
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val position=viewHolder.adapterPosition
-
-                if(action== ACTION_HISTORY)
-                    vm.deleteFromHistory(position)
-                else
-                    vm.deleteFromWatchLater(position)
-
-            }
-
-        }
-
+        itemTouchHelper.attachToRecyclerView(this)
     }
 
     private fun subscribeToObservers(){
