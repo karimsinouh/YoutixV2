@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.karimsinouh.youtixv2.R
 import com.karimsinouh.youtixv2.adapters.PlaylistVideosAdapter
 import com.karimsinouh.youtixv2.data.entities.HistoryItem
@@ -49,6 +50,17 @@ class ListFragment:Fragment(R.layout.fragment_list) {
         ItemTouchHelper(swipeCallback)
     }
 
+    private val deleteDialog by lazy {
+        MaterialAlertDialogBuilder(requireContext())
+                .setTitle(getString(R.string.delete))
+                .setMessage(getString(R.string.confirm_delete))
+                .setPositiveButton(getString(R.string.confirm)){ _, _->
+
+                }.setNegativeButton(getString(R.string.cancel)){ _, _->
+                    vm.clearSelected()
+                }
+    }
+
     @Inject lateinit var adapter:PlaylistVideosAdapter
 
 
@@ -74,9 +86,23 @@ class ListFragment:Fragment(R.layout.fragment_list) {
         }
 
         adapter.setOnClickListener {
-            navigateToVideoInfo(it.id!!)
+            val selectionMode=vm.selectedItems.value?.isNotEmpty()!!
+
+            if(selectionMode){
+                vm.selectItem(it.id!!)
+            }else{
+                navigateToVideoInfo(it.id!!)
+            }
+
         }
 
+        adapter.setOnLongClickListener {
+            vm.selectItem(it)
+        }
+
+        binding.deleteButton.setOnClickListener {
+            deleteDialog.show()
+        }
 
     }
 
@@ -91,6 +117,7 @@ class ListFragment:Fragment(R.layout.fragment_list) {
         adapter=this@ListFragment.adapter
 
         itemTouchHelper.attachToRecyclerView(this)
+
     }
 
     private fun subscribeToObservers(){
@@ -115,6 +142,16 @@ class ListFragment:Fragment(R.layout.fragment_list) {
 
             binding.emptyLayout.visibility=View.VISIBLE
         }
+
+        vm.selectedItems.observe(viewLifecycleOwner){
+            adapter.setSelectedList(it)
+            if(it.isEmpty()){
+                binding.deleteButton.visibility=View.GONE
+            }else{
+                binding.deleteButton.visibility=View.VISIBLE
+            }
+        }
+
     }
 
     private fun historyAction(){

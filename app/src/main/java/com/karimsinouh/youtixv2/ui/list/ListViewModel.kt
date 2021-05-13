@@ -23,6 +23,9 @@ class ListViewModel @Inject constructor(
     //mutable values
     private val _list = MutableLiveData<List<VideoItem>>()
     private val _error=MutableLiveData<String>()
+    private val _selectedItems=MutableLiveData<List<String>>(emptyList())
+
+
 
 
     //observable values
@@ -36,8 +39,23 @@ class ListViewModel @Inject constructor(
 
     val error:LiveData<String> = _error
     val list:LiveData<List<VideoItem>> =_list
+    val selectedItems:LiveData<List<String>> = _selectedItems
 
+    fun selectItem(id:String){
 
+        val newList=ArrayList(_selectedItems.value)
+
+        if (selectedItems.value?.contains(id)!!){
+            newList.remove(id)
+        }else{
+            newList.add(id)
+        }
+        _selectedItems.value=newList
+    }
+
+    fun clearSelected() {
+        _selectedItems.value= emptyList()
+    }
 
     fun loadList(ids:String)=viewModelScope.launch{
         repo.getSelectedVideos(ids){
@@ -57,5 +75,6 @@ class ListViewModel @Inject constructor(
         val item=list.value!![position]
         repo.db.watchLater().delete(item.id!!)
     }
+
 
 }

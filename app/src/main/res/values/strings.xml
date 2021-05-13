@@ -16,4 +16,8 @@
     <string name="get_started_text">Hi there, welcome to my youtube channel and android application, I\'m a passionate developer and content creator., I hope you like my content. Hi there, welcome to my youtube channel and android application, I\'m a passionate developer and content creator., I hope you like my content.</string>
     <string name="get_started">Get started</string>
     <string name="visit_channel">Visit Channel</string>
+    <string name="delete">Delete</string>
+    <string name="confirm_delete">Please confirm that you want to delete these items</string>
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
 </resources>

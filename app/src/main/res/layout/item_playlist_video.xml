@@ -9,6 +9,15 @@
     android:orientation="horizontal">
 
 
+    <CheckBox
+        android:enabled="false"
+        android:id="@+id/checkBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="12dp"
+        android:visibility="gone" />
+
     <ImageView
         android:id="@+id/thumbnail"
         android:layout_width="160dp"
@@ -23,13 +32,12 @@
         android:orientation="vertical">
 
         <TextView
-            android:paddingLeft="12dp"
-            android:paddingRight="12dp"
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:maxLines="4"
-            android:text="How to make a video in 5 minutesHow to make a video in 5 minutea video in 5 minutes"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
             android:textSize="18sp"
             android:textStyle="normal" />
 

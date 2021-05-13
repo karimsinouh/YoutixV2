@@ -1,6 +1,7 @@
 package com.karimsinouh.youtixv2.adapters
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
@@ -8,9 +9,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
 import com.karimsinouh.youtixv2.data.items.VideoItem
 import com.karimsinouh.youtixv2.databinding.ItemPlaylistVideoBinding
+import dagger.hilt.android.scopes.FragmentScoped
 import java.lang.NullPointerException
 import javax.inject.Inject
 
+@FragmentScoped
 class PlaylistVideosAdapter @Inject constructor(
         private val glide:RequestManager
 ):RecyclerView.Adapter<PlaylistVideosAdapter.PlaylistVideoHolder>() {
@@ -33,10 +36,33 @@ class PlaylistVideosAdapter @Inject constructor(
                 }
             }
 
+            root.setOnLongClickListener {
+                onLongClick?.let {
+                    it(item.id!!)
+                }
+                true
+            }
+
+            val selectionMode=selectedItems.isNotEmpty()
+
+            if(selectionMode) {
+                checkBox.visibility = View.VISIBLE
+                checkBox.isChecked=selectedItems.contains(item.id)
+            }else{
+                checkBox.visibility = View.GONE
+            }
+
         }
 
     }
 
+    private val selectedItems=ArrayList<String>()
+
+    fun setSelectedList(list:List<String>){
+        selectedItems.clear()
+        selectedItems.addAll(list)
+        this.notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int)=
             PlaylistVideoHolder( ItemPlaylistVideoBinding.inflate(LayoutInflater.from(parent.context),parent,false) )
@@ -69,6 +95,11 @@ class PlaylistVideosAdapter @Inject constructor(
     private var onClick: ( (VideoItem) ->Unit)?=null
     fun setOnClickListener(listener:(VideoItem) ->Unit){
         onClick=listener
+    }
+
+    private var onLongClick: ((videoId:String)->Unit)?=null
+    fun setOnLongClickListener( listener: (videoId:String) -> Unit ){
+        onLongClick=listener
     }
 
 }
