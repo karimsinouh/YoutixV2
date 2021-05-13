@@ -17,10 +17,11 @@ class GetStartedActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setTheme(R.style.Theme_YoutixV2)
+
         binding= ActivityGetStartedBinding.inflate(layoutInflater)
         setContentView(binding.root)
         window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
-
 
         binding.getStarted.setOnClickListener {
             FirstTime.isFirstTime(this,false)

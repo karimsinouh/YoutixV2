@@ -10,6 +10,7 @@ import androidx.room.Room
 import com.google.android.youtube.player.YouTubeBaseActivity
 import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
+import com.karimsinouh.youtixv2.R
 import com.karimsinouh.youtixv2.data.entities.HistoryItem
 import com.karimsinouh.youtixv2.database.Database
 import com.karimsinouh.youtixv2.databinding.ActivityPlayerBinding
@@ -28,6 +29,8 @@ class PlayerActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListene
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setTheme(R.style.Theme_YoutixV2)
+
         binding= ActivityPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
         window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
