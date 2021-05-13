@@ -14,18 +14,17 @@
         android:roundIcon="@drawable/icon"
         android:supportsRtl="true"
         android:theme="@style/Theme.YoutixV2">
+        <activity android:name=".ui.getStarted.GetStartedActivity"></activity>
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="@string/app_id"/>
+            android:value="@string/app_id" />
 
         <activity
-            android:supportsPictureInPicture="true"
-            android:configChanges=
-                "screenSize|smallestScreenSize|screenLayout|orientation"
             android:name=".ui.videoPlayer.PlayerActivity"
-            android:screenOrientation="landscape" />
-
+            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
+            android:screenOrientation="landscape"
+            android:supportsPictureInPicture="true" />
         <activity android:name=".ui.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,16 +33,14 @@
             </intent-filter>
         </activity>
 
-
-        <service android:name=".service.NotificationsReceiver"
+        <service
+            android:name=".service.NotificationsReceiver"
             android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
             </intent-filter>
-
         </service>
-
     </application>
 
 </manifest>

@@ -12,4 +12,8 @@
     <string name="share_video">Share this video</string>
     <string name="no_internet">You don\'t have Internet connection</string>
     <string name="try_again">try again</string>
+    <string name="get_started_title">Welcome to Youtix V2</string>
+    <string name="get_started_text">Hi there, welcome to my youtube channel and android application, I\'m a passionate developer and content creator., I hope you like my content. Hi there, welcome to my youtube channel and android application, I\'m a passionate developer and content creator., I hope you like my content.</string>
+    <string name="get_started">Get started</string>
+    <string name="visit_channel">Visit Channel</string>
 </resources>

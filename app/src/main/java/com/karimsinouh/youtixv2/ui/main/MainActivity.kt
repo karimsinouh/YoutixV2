@@ -1,5 +1,6 @@
 package com.karimsinouh.youtixv2.ui.main
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -17,7 +18,9 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging
 import com.karimsinouh.youtixv2.R
 import com.karimsinouh.youtixv2.databinding.ActivityMainBinding
+import com.karimsinouh.youtixv2.ui.getStarted.GetStartedActivity
 import com.karimsinouh.youtixv2.utils.Connectivity
+import com.karimsinouh.youtixv2.utils.FirstTime
 import com.karimsinouh.youtixv2.utils.VIDEO_ID
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -36,6 +39,9 @@ class MainActivity : AppCompatActivity() {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         binding= ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        if (FirstTime.isFirstTime(this))
+            openGetStarted()
 
         nav= findNavController(R.id.navHost)
 
@@ -114,6 +120,13 @@ class MainActivity : AppCompatActivity() {
     private fun openVideo(videoId:String){
         val args= bundleOf(VIDEO_ID to videoId)
         nav.navigate(R.id.global_to_videoInfo,args)
+    }
+
+    private fun openGetStarted(){
+        Intent(this,GetStartedActivity::class.java).let {
+            startActivity(it)
+            finish()
+        }
     }
 
 }
