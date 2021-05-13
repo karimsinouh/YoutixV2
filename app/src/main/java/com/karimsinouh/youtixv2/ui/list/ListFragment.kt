@@ -55,7 +55,7 @@ class ListFragment:Fragment(R.layout.fragment_list) {
                 .setTitle(getString(R.string.delete))
                 .setMessage(getString(R.string.confirm_delete))
                 .setPositiveButton(getString(R.string.confirm)){ _, _->
-
+                  vm.deleteAllSelected(action)
                 }.setNegativeButton(getString(R.string.cancel)){ _, _->
                     vm.clearSelected()
                 }

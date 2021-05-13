@@ -9,6 +9,7 @@ import com.karimsinouh.youtixv2.data.entities.HistoryItem
 import com.karimsinouh.youtixv2.data.entities.WatchLater
 import com.karimsinouh.youtixv2.data.items.VideoItem
 import com.karimsinouh.youtixv2.database.Database
+import com.karimsinouh.youtixv2.utils.ACTION_HISTORY
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.text.FieldPosition
@@ -51,6 +52,14 @@ class ListViewModel @Inject constructor(
             newList.add(id)
         }
         _selectedItems.value=newList
+    }
+
+    fun deleteAllSelected(action:String)=viewModelScope.launch{
+        if (action== ACTION_HISTORY)
+            repo.db.history().deleteByIds(selectedItems.value!!)
+        else
+            repo.db.watchLater().deleteByIds(selectedItems.value!!)
+        clearSelected()
     }
 
     fun clearSelected() {

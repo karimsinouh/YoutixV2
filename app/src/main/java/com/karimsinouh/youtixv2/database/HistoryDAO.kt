@@ -29,4 +29,7 @@ interface HistoryDAO {
     @Query("DELETE  FROM HistoryItem")
     fun clear()
 
+    @Query("DELETE FROM HistoryItem WHERE videoId in (:ids)")
+    suspend fun deleteByIds(ids:List<String>)
+
 }

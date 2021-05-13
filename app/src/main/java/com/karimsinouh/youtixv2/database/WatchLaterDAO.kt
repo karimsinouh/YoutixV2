@@ -26,4 +26,7 @@ interface WatchLaterDAO {
     @Query("DELETE  FROM WatchLater")
     fun clear()
 
+    @Query("DELETE FROM WatchLater WHERE videoId in (:ids)")
+    suspend fun deleteByIds(ids:List<String>)
+
 }
