@@ -1,7 +1,6 @@
 package com.karimsinouh.youtixv2.ui.search
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.os.bundleOf
@@ -75,9 +74,7 @@ class SearchFragment:Fragment(R.layout.fragment_search) {
                 }
 
                 if (text.isNullOrEmpty()){
-                    vm.searchHistory {
-                        historyAdapter.submitList(it)
-                    }
+                    historyAdapter.submitList(vm.searchHistory.value?: emptyList())
                 }
             }
         }
@@ -139,6 +136,12 @@ class SearchFragment:Fragment(R.layout.fragment_search) {
 
         vm.error.observe(viewLifecycleOwner){
             builder.setMessage(it).create().show()
+        }
+
+        vm.searchHistory.observe(viewLifecycleOwner){
+            if (!vm.searched){
+                historyAdapter.submitList(it)
+            }
         }
 
     }

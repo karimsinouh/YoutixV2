@@ -81,7 +81,7 @@ class MainActivity : AppCompatActivity() {
             openVideo(videoId!!)
         }
 
-        loadAd()
+        //loadAd()
 
     }
 

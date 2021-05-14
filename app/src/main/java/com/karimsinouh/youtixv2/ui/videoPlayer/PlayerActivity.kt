@@ -10,6 +10,7 @@ import androidx.room.Room
 import com.google.android.youtube.player.YouTubeBaseActivity
 import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
+import com.google.android.youtube.player.YouTubePlayerView
 import com.karimsinouh.youtixv2.R
 import com.karimsinouh.youtixv2.data.entities.HistoryItem
 import com.karimsinouh.youtixv2.database.Database
@@ -25,6 +26,8 @@ class PlayerActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListene
     private lateinit var binding:ActivityPlayerBinding
     private lateinit var videoId:String
     private lateinit var db:Database
+    private var player:YouTubePlayer?=null
+
     private var seeked=false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,6 +47,8 @@ class PlayerActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListene
 
     override fun onInitializationSuccess(p0: YouTubePlayer.Provider?, player: YouTubePlayer?, p2: Boolean) {
 
+        this.player=player
+
         player?.loadVideo(videoId)
         player?.setShowFullscreenButton(false)
 
@@ -59,7 +64,6 @@ class PlayerActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListene
                     }else{
                         addToHistory(player.durationMillis)
                     }
-                    Log.d("wtf",exists.toString())
                 }
             }
 
@@ -100,7 +104,6 @@ class PlayerActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListene
         CoroutineScope(Dispatchers.IO).launch {
             val item=HistoryItem(videoId,duration,0)
             db.history().add(item)
-            Log.d("wtf","add $duration")
         }
     }
 
@@ -124,6 +127,8 @@ class PlayerActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListene
 
     override fun onPictureInPictureModeChanged(isInPictureInPictureMode: Boolean, newConfig: Configuration?) {
         super.onPictureInPictureModeChanged(isInPictureInPictureMode, newConfig)
+        if (isInPictureInPictureMode)
+            player?.play()
 
     }
 

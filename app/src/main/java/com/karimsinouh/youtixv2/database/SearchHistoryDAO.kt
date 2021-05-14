@@ -9,7 +9,7 @@ import com.karimsinouh.youtixv2.data.items.SearchItem
 interface SearchHistoryDAO {
 
     @Query("SELECT * FROM SearchHistory ORDER BY ID DESC LIMIT 5 ")
-    suspend fun list():List<SearchHistory>
+    fun list():LiveData<List<SearchHistory>>
 
     @Query("SELECT * FROM SearchHistory WHERE `query` LIKE :query ORDER BY ID DESC LIMIT 5")
     suspend fun search(query:String):List<SearchHistory>

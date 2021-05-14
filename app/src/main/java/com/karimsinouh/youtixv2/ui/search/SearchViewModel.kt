@@ -1,6 +1,5 @@
 package com.karimsinouh.youtixv2.ui.search
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -24,17 +23,15 @@ class SearchViewModel @Inject constructor(private val repo:Repository):ViewModel
 
     val result:LiveData<List<SearchItem>> =_result
     val error:LiveData<String> = _error
+    var searchHistory=repo.db.searchHistory().list()
 
     fun search(q:String,loadMore:Boolean?=false)=viewModelScope.launch{
-
-        Log.d("wtf", "page token:'$nextPageToken'")
-        Log.d("wtf", "query:'$query'")
-
         if (q.isEmpty())
             return@launch
 
-        query=q
         searched=true
+
+        query=q
 
         if(!loadMore!!)
             nextPageToken=""
@@ -56,10 +53,6 @@ class SearchViewModel @Inject constructor(private val repo:Repository):ViewModel
         }
     }
 
-    fun searchHistory(listener:(List<SearchHistory>)->Unit)=viewModelScope.launch{
-        listener(repo.db.searchHistory().list())
-    }
-
     fun searchInHistory(q:String,listener: (List<SearchHistory>) -> Unit)=viewModelScope.launch{
         listener(repo.db.searchHistory().search("%$q%"))
     }
@@ -68,6 +61,10 @@ class SearchViewModel @Inject constructor(private val repo:Repository):ViewModel
         val searchItem=SearchHistory(q)
         if (!repo.db.searchHistory().exists(q))
             repo.db.searchHistory().add(searchItem)
+    }
+
+    fun removeSearchHistory(item:SearchHistory)=viewModelScope.launch{
+        repo.db.searchHistory().delete(item)
     }
 
 }
