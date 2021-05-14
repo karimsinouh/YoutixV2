@@ -18,9 +18,19 @@ class SearchHistoryAdapter @Inject constructor() :RecyclerView.Adapter<SearchHis
 
         fun bind(item:SearchHistory){
             binding.query.text=item.query
-            binding.remove.setOnClickListener {
 
+            binding.remove.setOnClickListener {_->
+                onRemove?.let {
+                    it(item)
+                }
             }
+
+            binding.root.setOnClickListener { _->
+                onClick?.let {
+                    it(item)
+                }
+            }
+
         }
 
     }
@@ -44,5 +54,17 @@ class SearchHistoryAdapter @Inject constructor() :RecyclerView.Adapter<SearchHis
     private val differ=AsyncListDiffer(this,diffCallback)
 
     fun submitList(list:List<SearchHistory>)=differ.submitList(list)
+
+    //callbacks
+
+    private var onClick: ( (SearchHistory)->Unit )?=null
+    fun setOnClickListener(listener:(SearchHistory)->Unit){
+        onClick=listener
+    }
+
+    private var onRemove:( (SearchHistory)->Unit )?=null
+    fun onRemoveListener(listener:(SearchHistory)->Unit){
+        onRemove=listener
+    }
 
 }

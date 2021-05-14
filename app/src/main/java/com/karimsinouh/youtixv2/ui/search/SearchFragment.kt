@@ -82,6 +82,15 @@ class SearchFragment:Fragment(R.layout.fragment_search) {
             }
         }
 
+        historyAdapter.setOnClickListener {
+            binding.input.editText?.setText(it.query)
+            search(it.query)
+        }
+
+        historyAdapter.onRemoveListener {
+            vm.removeSearchHistory(it)
+        }
+
     }
 
     private fun navigateToVideoInfo(id:String){
