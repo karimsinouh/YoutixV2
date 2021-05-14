@@ -1,9 +1,11 @@
 package com.karimsinouh.youtixv2.ui.search
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.os.bundleOf
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
@@ -12,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.karimsinouh.youtixv2.R
+import com.karimsinouh.youtixv2.adapters.SearchHistoryAdapter
 import com.karimsinouh.youtixv2.adapters.SearchItemsAdapter
 import com.karimsinouh.youtixv2.databinding.FragmentSearchBinding
 import com.karimsinouh.youtixv2.utils.KIND_VIDEO
@@ -31,6 +34,8 @@ class SearchFragment:Fragment(R.layout.fragment_search) {
     private var isLoading=true
 
     @Inject lateinit var adapter:SearchItemsAdapter
+    @Inject lateinit var historyAdapter:SearchHistoryAdapter
+
     private lateinit var lManager:LinearLayoutManager
     private val vm by viewModels<SearchViewModel>()
 
@@ -49,6 +54,7 @@ class SearchFragment:Fragment(R.layout.fragment_search) {
             val q=binding.input.editText?.text.toString()
             if (q.isNotEmpty())
                 search(q)
+
         }
 
         adapter.setOnClickListener {id,name->
@@ -57,6 +63,25 @@ class SearchFragment:Fragment(R.layout.fragment_search) {
             else
                 navigateToViewPlaylist(id.playlistId!!,name)
         }
+
+
+        binding.input.editText?.doOnTextChanged { text, start, before, count ->
+            if (!vm.searched){
+
+                binding.rcv.adapter=historyAdapter
+
+                vm.searchInHistory(text.toString()){
+                    historyAdapter.submitList(it)
+                }
+
+                if (text.isNullOrEmpty()){
+                    vm.searchHistory {
+                        historyAdapter.submitList(it)
+                    }
+                }
+            }
+        }
+
     }
 
     private fun navigateToVideoInfo(id:String){
@@ -71,13 +96,15 @@ class SearchFragment:Fragment(R.layout.fragment_search) {
         lManager= LinearLayoutManager(requireContext())
         layoutManager=lManager
         setHasFixedSize(true)
-        adapter=this@SearchFragment.adapter
 
         addOnScrollListener(object :RecyclerView.OnScrollListener(){
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
 
-                val canLoadMore=vm.result.value?.isNotEmpty()!! && vm.nextPageToken!="" || vm.result.value?.isEmpty()!! && vm.nextPageToken==""
+                val canLoadMore=
+                        vm.result.value?.isNotEmpty()!!
+                                && vm.nextPageToken!="" || vm.result.value?.isEmpty()!!
+                                && vm.nextPageToken==""
                 if(!canScrollVertically(1) && !isLoading && canLoadMore && vm.result.value?.isNotEmpty()!! )
                     loadMore()
             }
@@ -88,7 +115,9 @@ class SearchFragment:Fragment(R.layout.fragment_search) {
 
         vm.result.observe(viewLifecycleOwner){
             if (it.isEmpty()){
-                Toast.makeText(requireContext(),"No results for: ${vm.query}",Toast.LENGTH_SHORT).show()
+                if(vm.query.isNotEmpty())
+                    Toast.makeText(requireContext(),"No results for: ${vm.query}",Toast.LENGTH_SHORT).show()
+
                 binding.bar.visibility=View.GONE
             }else{
                 adapter.submitList(it)
@@ -106,17 +135,21 @@ class SearchFragment:Fragment(R.layout.fragment_search) {
     }
 
     private fun search(q: String) {
+        binding.rcv.adapter=adapter
+
         binding.bar.visibility=View.VISIBLE
         binding.rcv.visibility=View.GONE
 
         vm.search(q)
-
     }
 
     private fun loadMore(){
-        vm.search(vm.query,loadMore = true)
-        binding.loadMoreBar.visibility=View.VISIBLE
-        isLoading=true
+        if (vm.nextPageToken.isNotEmpty()){
+            vm.search(vm.query,loadMore = true)
+            binding.loadMoreBar.visibility=View.VISIBLE
+            isLoading=true
+        }
+
     }
 
 }
