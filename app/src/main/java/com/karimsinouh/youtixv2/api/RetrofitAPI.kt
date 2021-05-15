@@ -19,7 +19,7 @@ interface RetrofitAPI {
     @GET("playlists?part=snippet,contentDetails&channelId=$CHANNEL_ID&maxResults=20&key=$API_KEY")
     suspend fun getPlaylists( @Query("pageToken") pageToken:String?="" ):Response<ResponsePage<PlaylistItem>>
 
-    @GET("search?part=snippet&channelId=$CHANNEL_ID&key=$API_KEY&maxResults=5")
+    @GET("search?part=snippet&channelId=$CHANNEL_ID&key=$API_KEY&maxResults=8")
     suspend fun search( @Query("q") q:String,@Query("pageToken") pageToken:String?="" ):Response<ResponsePage<SearchItem>>
 
     @GET("videos?part=snippet&key=$API_KEY")
