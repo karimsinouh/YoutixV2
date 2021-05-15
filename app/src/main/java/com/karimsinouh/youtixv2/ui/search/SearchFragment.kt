@@ -64,7 +64,7 @@ class SearchFragment:Fragment(R.layout.fragment_search) {
         }
 
 
-        binding.input.editText?.doOnTextChanged { text, start, before, count ->
+        binding.input.editText?.doOnTextChanged { text, _, _, _ ->
             if (!vm.searched){
 
                 binding.rcv.adapter=historyAdapter
@@ -78,6 +78,10 @@ class SearchFragment:Fragment(R.layout.fragment_search) {
                 }
             }
         }
+
+        binding.rcv.adapter=historyAdapter
+        historyAdapter.submitList(vm.searchHistory.value?: emptyList())
+
 
         historyAdapter.setOnClickListener {
             binding.input.editText?.setText(it.query)
