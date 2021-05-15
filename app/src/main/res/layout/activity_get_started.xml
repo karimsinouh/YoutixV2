@@ -6,10 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".ui.getStarted.GetStartedActivity">
 
-    <com.karimsinouh.youtixv2.ui.getStarted.SquareImage
+    <ImageView
         android:id="@+id/imageView2"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:scaleType="centerCrop"
+        android:layout_height="300dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
