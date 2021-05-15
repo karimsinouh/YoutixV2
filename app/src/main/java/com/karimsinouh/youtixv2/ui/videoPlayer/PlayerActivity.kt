@@ -29,6 +29,8 @@ class PlayerActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListene
     private var player:YouTubePlayer?=null
 
     private var seeked=false
+    private var isPictureInPicture=false
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -120,16 +122,25 @@ class PlayerActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListene
     override fun onUserLeaveHint() {
         super.onUserLeaveHint()
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            val pipBuilder=PictureInPictureParams.Builder().setAspectRatio(Rational(1,2)).build()
+            val pipBuilder=PictureInPictureParams.Builder().setAspectRatio(Rational(2,1)).build()
             enterPictureInPictureMode(pipBuilder)
         }
     }
 
     override fun onPictureInPictureModeChanged(isInPictureInPictureMode: Boolean, newConfig: Configuration?) {
         super.onPictureInPictureModeChanged(isInPictureInPictureMode, newConfig)
-        if (isInPictureInPictureMode)
-            player?.play()
+        isPictureInPicture=isInPictureInPictureMode
+    }
 
+    override fun onPause() {
+        super.onPause()
+        if (isPictureInPicture)
+            player?.play()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        updateMillis(player?.currentTimeMillis!!)
     }
 
 }
