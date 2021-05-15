@@ -17,6 +17,7 @@ import com.karimsinouh.youtixv2.ui.videoPlayer.PlayerActivity
 import com.karimsinouh.youtixv2.utils.VIDEO_ID
 import com.karimsinouh.youtixv2.utils.ViewsFormatter
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.ocpsoft.prettytime.PrettyTime
 import java.text.SimpleDateFormat
@@ -27,11 +28,13 @@ class VideoInfoFragment: Fragment(R.layout.fragment_video_info) {
 
     private lateinit var binding:FragmentVideoInfoBinding
     private lateinit var videoId:String
-    private val vm by viewModels<VideoInfoViewModel>()
 
-    private val request=AdRequest.Builder().build()
+    private val request by lazy{
+        AdRequest.Builder().build()
+    }
     private var interstitialAd: InterstitialAd?=null
 
+    private val vm by viewModels<VideoInfoViewModel>()
     @Inject lateinit var glide:RequestManager
     @Inject lateinit var prettyTime: PrettyTime
 
@@ -40,12 +43,15 @@ class VideoInfoFragment: Fragment(R.layout.fragment_video_info) {
         binding= FragmentVideoInfoBinding.bind(view)
         videoId=arguments?.getString(VIDEO_ID)!!
 
-        InterstitialAd.load(requireContext(),getString(R.string.interstitial),request,object : InterstitialAdLoadCallback(){
-            override fun onAdLoaded(p0: InterstitialAd) {
-                super.onAdLoaded(p0)
-                interstitialAd=p0
-            }
-        })
+        lifecycleScope.launch {
+            delay(1000)
+            InterstitialAd.load(requireContext(),getString(R.string.interstitial),request,object : InterstitialAdLoadCallback(){
+                override fun onAdLoaded(p0: InterstitialAd) {
+                    super.onAdLoaded(p0)
+                    interstitialAd=p0
+                }
+            })
+        }
 
         lifecycleScope.launch {
             vm.loadVideo(videoId)
@@ -55,9 +61,8 @@ class VideoInfoFragment: Fragment(R.layout.fragment_video_info) {
 
     }
 
-    private fun showAd(){
-        interstitialAd?.show(requireActivity())
-    }
+    private fun showAd()=interstitialAd?.show(requireActivity())
+
 
     private fun share(id:String){
         val url="https://youtube.com/watch?v=$id"
