@@ -110,7 +110,12 @@ class ViewPlaylistFragment:Fragment(R.layout.fragment_view_playlist) {
     @SuppressLint("SimpleDateFormat")
     private fun bind(video:VideoItem, withStatistics:Boolean?=false)=binding.apply{
         videoTitle.text=video.snippet.title
-        glide.load(video.snippet.thumbnails.medium.url).into(thumbnail)
+        try{
+            glide.load(video.snippet.thumbnails.medium.url).into(thumbnail)
+        }catch(e:NullPointerException){
+            glide.load("https://i.ytimg.com/img/no_thumbnail.jpg").into(thumbnail)
+        }
+
 
         val dateFormatter=SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
         val time=dateFormatter.parse(video.snippet.publishedAt)
