@@ -18,6 +18,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging
 import com.karimsinouh.youtixv2.R
 import com.karimsinouh.youtixv2.databinding.ActivityMainBinding
+import com.karimsinouh.youtixv2.ui.chat.ChatActivity
 import com.karimsinouh.youtixv2.ui.getStarted.GetStartedActivity
 import com.karimsinouh.youtixv2.utils.Connectivity
 import com.karimsinouh.youtixv2.utils.FirstTime
@@ -82,6 +83,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         //loadAd()
+
+        startActivity(Intent(this,ChatActivity::class.java))
 
     }
 
