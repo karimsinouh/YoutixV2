@@ -14,7 +14,7 @@
         android:roundIcon="@drawable/icon"
         android:supportsRtl="true"
         android:theme="@style/Theme.Splash">
-
+        <activity android:name=".ui.chat.ChatActivity"></activity>
         <activity android:name=".ui.getStarted.GetStartedActivity" />
 
         <meta-data

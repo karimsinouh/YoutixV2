@@ -20,4 +20,9 @@
     <string name="confirm_delete">Please confirm that you want to delete these items</string>
     <string name="confirm">Confirm</string>
     <string name="cancel">Cancel</string>
+
+    <string name="identify_yourself">Please identify yourself so you can be a part of our community. It only takes a few seconds</string>
+    <string name="name">Name</string>
+    <string name="change_name">Update name</string>
+    <string name="done">Done!</string>
 </resources>
