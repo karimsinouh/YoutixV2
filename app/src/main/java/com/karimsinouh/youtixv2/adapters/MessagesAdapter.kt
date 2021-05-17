@@ -1,6 +1,8 @@
 package com.karimsinouh.youtixv2.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
@@ -44,7 +46,7 @@ class MessagesAdapter(
 
     override fun getItemViewType(position: Int): Int {
         val item=differ.currentList[position]
-        return  if (item.id==uid) TYPE_RIGHT else TYPE_LEFT
+        return  if (item.uid==uid) TYPE_RIGHT else TYPE_LEFT
     }
 
     override fun getItemCount()=differ.currentList.size
@@ -61,7 +63,20 @@ class MessagesAdapter(
 
     inner class MessageLeftHolder(private val binding: ItemMessageLeftBinding):RecyclerView.ViewHolder(binding.root){
         fun bind(position: Int){
+
             val msg=differ.currentList[position]
+
+            if (differ.currentList.size+1>position){
+                try {
+                    val next=differ.currentList[position+1]
+                    if (next.uid==msg.uid)
+                        binding.userName.visibility=View.GONE
+                }catch (e:IndexOutOfBoundsException){
+
+                }
+            }
+
+
             binding.message.text=msg.message
             binding.userName.text=msg.userName
         }
