@@ -7,9 +7,6 @@ import androidx.core.content.edit
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.karimsinouh.youtixv2.R
 import com.karimsinouh.youtixv2.databinding.LayoutCreateProfileBinding
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.android.scopes.ActivityScoped
-import javax.inject.Inject
 import kotlin.random.Random
 
 
@@ -19,9 +16,13 @@ class IdentityDialog constructor(
 
     private val prefs=context.getSharedPreferences("identity_prefs",Context.MODE_PRIVATE)
 
-    fun exists()=prefs.getString("id","0")!="0"
-
     fun name()=prefs.getString("name","")
+
+    fun id()=prefs.getString("id","0") ?: "0"
+
+    fun exists()=id()!="0"
+
+
 
     fun show(){
 
